@@ -16,9 +16,14 @@ import butterknife.BindView;
  * Created by huylv on 21-Mar-17.
  */
 
-public class BookAdapter extends BaseAdapter<Book> {
+public class BookAdapter extends BaseAdapter<Book, BookAdapter.BookVH> {
     public BookAdapter(Activity a, ArrayList<Book> l) {
         super(a, l);
+    }
+
+    @Override
+    protected BookVH createViewHolder(View view) {
+        return new BookVH(view);
     }
 
     @Override
@@ -33,8 +38,7 @@ public class BookAdapter extends BaseAdapter<Book> {
         bookVH.book_thumb.setImageResource(book.imageid);
     }
 
-
-    class BookVH extends SViewHolder {
+    public static class BookVH extends BaseAdapter.SViewHolder {
         @BindView(R.id.book_name)        TextView book_name;
         @BindView(R.id.book_thumb)        ImageView book_thumb;
 

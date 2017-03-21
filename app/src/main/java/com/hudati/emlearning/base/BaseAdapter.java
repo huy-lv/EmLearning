@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
  * Created by huylv on 21-Mar-17.
  */
 
-public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.SViewHolder> {
+public abstract class BaseAdapter<T, VH extends BaseAdapter.SViewHolder> extends RecyclerView.Adapter<VH> {
     Activity activity;
     ArrayList<T> objectList;
 
@@ -24,12 +24,14 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter.SV
     }
 
     @Override
-    public SViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(activity).inflate(getLayoutId(),parent,false);
-        return new SViewHolder(v);
+        return createViewHolder(v);
     }
 
-    protected  class SViewHolder extends RecyclerView.ViewHolder{
+    protected abstract VH createViewHolder(View view);
+
+    public static class SViewHolder extends RecyclerView.ViewHolder{
         public SViewHolder(View itemView){
             super(itemView);
             ButterKnife.bind(this,itemView);
