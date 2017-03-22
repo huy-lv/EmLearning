@@ -1,44 +1,33 @@
 package com.hudati.emlearning;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
-import android.view.Gravity;
-import android.widget.LinearLayout;
 
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.daimajia.slider.library.Transformers.RotateDownTransformer;
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
-import com.hudati.emlearning.adapter.BookAdapter;
-import com.hudati.emlearning.model.Book;
-import com.hudati.emlearning.model.Category;
-import com.hudati.emlearning.util.Utils;
+import com.hudati.emlearning.fragment.HomeFragment;
+import com.hudati.emlearning.fragment.UserFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(R.id.book_list_rv)    RecyclerView book_list_rv;
-    ArrayList<Book> bookList;
-    BookAdapter bookAdapter;
 
-    @BindView(R.id.main_layout_category)    LinearLayout main_layout_category;
-    ArrayList<Category> categories;
 
-    @BindView(R.id.main_image_slider)    SliderLayout sliderLayout;
+    @BindView(R.id.tabs)
+    TabLayout tabs;
+    @BindView(R.id.viewpager)
+    ViewPager viewpager;
 
-    private ArrayList<Book> testList;
-    @BindView(R.id.test_list_rv) RecyclerView test_list_rv;
-    BookAdapter testAdapter;
+    HomeFragment homeFragment;
+    UserFragment userFragment;
 
-//    @BindView(R.id.book_list_rv)    SimpleRecyclerView book_list_rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,52 +35,47 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //slider
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
-        for(String name : url_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(this);
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
+        //fragments
+        homeFragment = new HomeFragment();
+        userFragment = new UserFragment();
 
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra",name);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
+        viewPagerAdapter.addFrag(homeFragment);
+        viewPagerAdapter.addFrag(new UserFragment());
+        viewPagerAdapter.addFrag(userFragment);
+        viewpager.setAdapter(viewPagerAdapter);
 
-            sliderLayout.addSlider(textSliderView);
+        tabs.setupWithViewPager(viewpager);
+        tabs.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
+        tabs.getTabAt(1).setIcon(R.drawable.ic_ac_unit_black_24dp);
+        tabs.getTabAt(2).setIcon(R.drawable.ic_person_black_24dp);
+    }
+
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
-        sliderLayout.setPagerTransformer(true,new RotateDownTransformer());
 
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
 
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
 
-        //categoryList
-        categories = Utils.getCategoryList();
+        public void addFrag(Fragment fragment) {
+            mFragmentList.add(fragment);
+        }
 
-
-        //test list
-        testList = Utils.getBookList(this);
-        test_list_rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        testAdapter = new BookAdapter(this,testList);
-        test_list_rv.setAdapter(testAdapter);
-        SnapHelper h = new GravitySnapHelper(Gravity.START);
-        h.attachToRecyclerView(test_list_rv);
-
-
-        //create book list
-        bookList = Utils.getBookList(this);
-        book_list_rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        bookAdapter = new BookAdapter(this,bookList);
-        book_list_rv.setAdapter(bookAdapter);
-        h = new GravitySnapHelper(Gravity.START);
-        h.attachToRecyclerView(book_list_rv);
-
-
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return null;
+        }
     }
 }
