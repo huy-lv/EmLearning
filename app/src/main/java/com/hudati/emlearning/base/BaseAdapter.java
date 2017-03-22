@@ -26,10 +26,10 @@ public abstract class BaseAdapter<T, VH extends BaseAdapter.SViewHolder> extends
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(activity).inflate(getLayoutId(),parent,false);
-        return createViewHolder(v);
+        return onCreateViewHolder(v);
     }
 
-    protected abstract VH createViewHolder(View view);
+    protected abstract VH onCreateViewHolder(View view);
 
     public static class SViewHolder extends RecyclerView.ViewHolder{
         public SViewHolder(View itemView){

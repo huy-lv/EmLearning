@@ -50,7 +50,7 @@ public class BookCell extends SimpleCell<Book,BookCell.BookViewHolder> {
 
     class BookViewHolder extends SimpleViewHolder{
         @BindView(R.id.book_name) TextView book_name;
-        @BindView(R.id.book_thumb) ImageView book_thumb;
+        @BindView(R.id.book_image) ImageView book_thumb;
 
         BookViewHolder(View itemView) {
             super(itemView);

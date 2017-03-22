@@ -1,10 +1,11 @@
-package com.hudati.emlearning;
+package com.hudati.emlearning.adapter;
 
 import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hudati.emlearning.R;
 import com.hudati.emlearning.base.BaseAdapter;
 import com.hudati.emlearning.model.Book;
 
@@ -22,7 +23,7 @@ public class BookAdapter extends BaseAdapter<Book, BookAdapter.BookVH> {
     }
 
     @Override
-    protected BookVH createViewHolder(View view) {
+    protected BookVH onCreateViewHolder(View view) {
         return new BookVH(view);
     }
 
@@ -35,14 +36,14 @@ public class BookAdapter extends BaseAdapter<Book, BookAdapter.BookVH> {
     protected void onSBindViewHolder(SViewHolder holder, int position, Book book) {
         BookVH bookVH = (BookVH) holder;
         bookVH.book_name.setText(book.name);
-        bookVH.book_thumb.setImageResource(book.imageid);
+        bookVH.book_image.setImageResource(book.imageid);
     }
 
-    public static class BookVH extends BaseAdapter.SViewHolder {
+    class BookVH extends BaseAdapter.SViewHolder {
         @BindView(R.id.book_name)        TextView book_name;
-        @BindView(R.id.book_thumb)        ImageView book_thumb;
+        @BindView(R.id.book_image)        ImageView book_image;
 
-        public BookVH(View itemView) {
+        BookVH(View itemView) {
             super(itemView);
         }
     }
