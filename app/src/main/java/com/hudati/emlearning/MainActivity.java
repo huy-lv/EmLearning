@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.hudati.emlearning.fragment.HomeFragment;
+import com.hudati.emlearning.fragment.MiddleFragment;
 import com.hudati.emlearning.fragment.UserFragment;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewpager;
 
     HomeFragment homeFragment;
+    MiddleFragment middleFragment;
     UserFragment userFragment;
 
 
@@ -37,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         //fragments
         homeFragment = new HomeFragment();
+        middleFragment = new MiddleFragment();
         userFragment = new UserFragment();
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
         viewPagerAdapter.addFrag(homeFragment);
-        viewPagerAdapter.addFrag(new UserFragment());
+        viewPagerAdapter.addFrag(middleFragment);
         viewPagerAdapter.addFrag(userFragment);
         viewpager.setAdapter(viewPagerAdapter);
 

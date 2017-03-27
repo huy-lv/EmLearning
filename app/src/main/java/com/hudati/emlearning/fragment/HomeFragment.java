@@ -1,7 +1,6 @@
 package com.hudati.emlearning.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -20,9 +17,11 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Transformers.RotateDownTransformer;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
+import com.hudati.emlearning.BookListActivity;
 import com.hudati.emlearning.PracticeActivity;
 import com.hudati.emlearning.R;
 import com.hudati.emlearning.adapter.BookAdapter;
+import com.hudati.emlearning.base.BaseFragment;
 import com.hudati.emlearning.model.Book;
 import com.hudati.emlearning.model.Category;
 import com.hudati.emlearning.util.Utils;
@@ -31,13 +30,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by huylv on 22-Mar-17.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.book_list_rv)
     RecyclerView book_list_rv;
     ArrayList<Book> bookList;
@@ -61,13 +59,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.home_category4)
     RelativeLayout home_category4;
     Activity c;
+    @BindView(R.id.home_title_test)
+    RelativeLayout home_title_test;
+    @BindView(R.id.home_title_book)
+    RelativeLayout home_title_book;
     private ArrayList<Book> testList;
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home,container,false);
-        ButterKnife.bind(this, v);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         c = getActivity();
 
         //slider
@@ -100,6 +101,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         home_category2.setOnClickListener(this);
         home_category3.setOnClickListener(this);
         home_category4.setOnClickListener(this);
+        home_title_test.setOnClickListener(this);
+        home_title_book.setOnClickListener(this);
 
         //test list
         testList = Utils.getBookList(c);
@@ -117,9 +120,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         book_list_rv.setAdapter(bookAdapter);
         h = new GravitySnapHelper(Gravity.START);
         h.attachToRecyclerView(book_list_rv);
+    }
 
-
-        return v;
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_home;
     }
 
     @Override
@@ -137,6 +142,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.home_category4:
 
                 break;
+            case R.id.home_title_test:
+                startActivity(new Intent(c, BookListActivity.class));
+                break;
+            case R.id.home_title_book:
+                startActivity(new Intent(c, BookListActivity.class));
+                break;
         }
     }
+
 }
