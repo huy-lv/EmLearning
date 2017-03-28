@@ -20,12 +20,12 @@ import java.util.List;
  * Created by huylv on 22-Mar-17.
  */
 
-public class SimpleDemoExpandableItemAdapter extends AbstractExpandableItemAdapter<SimpleDemoExpandableItemAdapter.MyGroupViewHolder, SimpleDemoExpandableItemAdapter.MyChildViewHolder> implements View.OnClickListener {
+public class BookExpandableItemAdapter extends AbstractExpandableItemAdapter<BookExpandableItemAdapter.MyGroupViewHolder, BookExpandableItemAdapter.MyChildViewHolder> implements View.OnClickListener {
     RecyclerViewExpandableItemManager mExpandableItemManager;
     List<MyGroupItem> mItems;
     OnListItemClickMessageListener mOnItemClickListener;
 
-    public SimpleDemoExpandableItemAdapter(RecyclerViewExpandableItemManager expMgr, OnListItemClickMessageListener clickListener) {
+    public BookExpandableItemAdapter(RecyclerViewExpandableItemManager expMgr, OnListItemClickMessageListener clickListener) {
         mExpandableItemManager = expMgr;
         mOnItemClickListener = clickListener;
 
@@ -33,9 +33,9 @@ public class SimpleDemoExpandableItemAdapter extends AbstractExpandableItemAdapt
 
         mItems = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            MyGroupItem group = new MyGroupItem(i, "GROUP " + i);
+            MyGroupItem group = new MyGroupItem(i, "Phase " + (i + 1));
             for (int j = 0; j < 5; j++) {
-                group.children.add(new MyChildItem(j, "child " + j));
+                group.children.add(new MyChildItem(j, "Lesson " + (j + 1)));
             }
             mItems.add(group);
         }

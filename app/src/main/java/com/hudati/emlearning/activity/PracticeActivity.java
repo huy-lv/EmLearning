@@ -1,4 +1,4 @@
-package com.hudati.emlearning;
+package com.hudati.emlearning.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,8 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
+import com.hudati.emlearning.R;
+import com.hudati.emlearning.adapter.BookExpandableItemAdapter;
 import com.hudati.emlearning.adapter.OnListItemClickMessageListener;
-import com.hudati.emlearning.adapter.SimpleDemoExpandableItemAdapter;
 import com.hudati.emlearning.base.BaseToolbarActivity;
 
 import butterknife.BindView;
@@ -29,7 +30,7 @@ public class PracticeActivity extends BaseToolbarActivity {
         RecyclerViewExpandableItemManager expMgr = new RecyclerViewExpandableItemManager(null);
 
 
-        adapter = new SimpleDemoExpandableItemAdapter(expMgr, new OnListItemClickMessageListener() {
+        adapter = new BookExpandableItemAdapter(expMgr, new OnListItemClickMessageListener() {
             @Override
             public void onItemClicked(String message) {
 

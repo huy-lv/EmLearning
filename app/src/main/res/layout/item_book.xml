@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/book_cv"
     android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -28,10 +29,10 @@
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="6dp"
+            android:layout_weight="0.46"
             android:maxLines="2"
             android:text="Name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:layout_weight="0.46" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 
     </LinearLayout>

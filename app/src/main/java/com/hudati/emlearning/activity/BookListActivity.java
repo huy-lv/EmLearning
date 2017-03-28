@@ -1,9 +1,10 @@
-package com.hudati.emlearning;
+package com.hudati.emlearning.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.hudati.emlearning.R;
 import com.hudati.emlearning.adapter.BookAdapter;
 import com.hudati.emlearning.base.BaseToolbarActivity;
 import com.hudati.emlearning.model.Book;
