@@ -45,5 +45,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.koushikdutta.ion:ion:2.+'
-
+    compile 'com.github.clans:fab:1.6.4'
 }
