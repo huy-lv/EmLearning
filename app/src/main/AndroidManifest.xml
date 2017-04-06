@@ -2,13 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hudati.emlearning">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,9 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.PracticeActivity" />
+        <activity android:name=".activity.CategoryActivity" />
         <activity android:name=".activity.BookListActivity" />
         <activity android:name=".activity.ReadActivity" />
+        <activity android:name=".activity.LectureActivity" />
+        <activity android:name=".activity.PracticeDetailActivity" />
+        <activity android:name=".activity.PracticeListActivity"/>
+        <activity android:name=".activity.PracticeActivity"/>
     </application>
 
 </manifest>

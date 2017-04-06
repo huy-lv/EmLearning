@@ -1,5 +1,7 @@
 package com.hudati.emlearning.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,55 +14,58 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 import com.h6ah4i.android.widget.advrecyclerview.utils.RecyclerViewAdapterUtils;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.hudati.emlearning.R;
+import com.hudati.emlearning.activity.LectureActivity;
+import com.hudati.emlearning.api.LectureResponse;
+import com.hudati.emlearning.model.Lecture;
+import com.hudati.emlearning.util.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by huylv on 22-Mar-17.
  */
 
-public class BookExpandableItemAdapter extends AbstractExpandableItemAdapter<BookExpandableItemAdapter.MyGroupViewHolder, BookExpandableItemAdapter.MyChildViewHolder> implements View.OnClickListener {
+public class GroupLectureAdapter extends AbstractExpandableItemAdapter<GroupLectureAdapter.MyGroupViewHolder, GroupLectureAdapter.MyChildViewHolder> implements View.OnClickListener {
     RecyclerViewExpandableItemManager mExpandableItemManager;
-    List<MyGroupItem> mItems;
-    OnListItemClickMessageListener mOnItemClickListener;
+    public ArrayList<LectureResponse.GroupLectures> groupLectures;
+    Context context;
 
-    public BookExpandableItemAdapter(RecyclerViewExpandableItemManager expMgr, OnListItemClickMessageListener clickListener) {
+    public GroupLectureAdapter(Context c, RecyclerViewExpandableItemManager expMgr) {
         mExpandableItemManager = expMgr;
-        mOnItemClickListener = clickListener;
+        context = c;
 
         setHasStableIds(true); // this is required for expandable feature.
 
-        mItems = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            MyGroupItem group = new MyGroupItem(i, "Phase " + (i + 1));
-            for (int j = 0; j < 5; j++) {
-                group.children.add(new MyChildItem(j, "Lesson " + (j + 1)));
-            }
-            mItems.add(group);
-        }
+        groupLectures = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            MyGroupItem group = new MyGroupItem(i, "Phase " + (i + 1));
+//            for (int j = 0; j < 5; j++) {
+//                group.children.add(new MyChildItem(j, "Lesson " + (j + 1)));
+//            }
+//            groupLectures.add(group);
+//        }
     }
 
     @Override
     public int getGroupCount() {
-        return mItems.size();
+        return groupLectures.size();
     }
 
     @Override
     public int getChildCount(int groupPosition) {
-        return mItems.get(groupPosition).children.size();
+        return groupLectures.get(groupPosition).getLectures().size();
     }
 
     @Override
     public long getGroupId(int groupPosition) {
         // This method need to return unique value within all group items.
-        return mItems.get(groupPosition).id;
+        return groupLectures.get(groupPosition).getId();
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         // This method need to return unique value within the group.
-        return mItems.get(groupPosition).children.get(childPosition).id;
+        return Long.parseLong(groupLectures.get(groupPosition).getLectures().get(childPosition).getLectureUnit());
     }
 
     @Override
@@ -81,14 +86,14 @@ public class BookExpandableItemAdapter extends AbstractExpandableItemAdapter<Boo
 
     @Override
     public void onBindGroupViewHolder(MyGroupViewHolder holder, int groupPosition, int viewType) {
-        MyGroupItem group = mItems.get(groupPosition);
-        holder.textView.setText(group.text);
+        LectureResponse.GroupLectures group = groupLectures.get(groupPosition);
+        holder.textView.setText(group.getHeaderName());
     }
 
     @Override
     public void onBindChildViewHolder(MyChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
-        MyChildItem child = mItems.get(groupPosition).children.get(childPosition);
-        holder.textView.setText(child.text);
+        Lecture child = groupLectures.get(groupPosition).getLectures().get(childPosition);
+        holder.textView.setText(child.getLectureTitle());
     }
 
     @Override
@@ -131,35 +136,40 @@ public class BookExpandableItemAdapter extends AbstractExpandableItemAdapter<Boo
             // Clicked item is a child!
 
             message = "CLICKED: Child " + groupPosition + "-" + childPosition;
+            Intent i = new Intent(context, LectureActivity.class);
+            Lecture l = groupLectures.get(groupPosition).getLectures().get(childPosition);
+            i.putExtra(Utils.INTENT_KEY_ACTION_LECTURE_NAME,l.getLectureTitle());
+            i.putExtra(Utils.INTENT_KEY_ACTION_LECTURE_PAGE,l.getActions().getActionSinglePage());
+            i.putExtra(Utils.INTENT_ACTION_LECTURE_YOUTUBE,l.getLectureYoutubeCode());
+            context.startActivity(i);
         }
 
-        mOnItemClickListener.onItemClicked(message);
     }
 
-    static abstract class MyBaseItem {
-        public final long id;
-        public final String text;
+//        static abstract class MyBaseItem {
+//            public long id;
+//            public String text;
+//
+//            public MyBaseItem(long id, String text) {
+//                this.id = id;
+//                this.text = text;
+//            }
+//        }
 
-        public MyBaseItem(long id, String text) {
-            this.id = id;
-            this.text = text;
-        }
-    }
+//    static class MyGroupItem extends MyBaseItem {
+//        public final List<MyChildItem> children;
+//
+//        public MyGroupItem(long id, String text) {
+//            super(id, text);
+//            children = new ArrayList<>();
+//        }
+//    }
 
-    static class MyGroupItem extends MyBaseItem {
-        public final List<MyChildItem> children;
-
-        public MyGroupItem(long id, String text) {
-            super(id, text);
-            children = new ArrayList<>();
-        }
-    }
-
-    static class MyChildItem extends MyBaseItem {
-        public MyChildItem(long id, String text) {
-            super(id, text);
-        }
-    }
+//    static class MyChildItem extends MyBaseItem {
+//        public MyChildItem(long id, String text) {
+//            super(id, text);
+//        }
+//    }
 
     static abstract class MyBaseViewHolder extends AbstractExpandableItemViewHolder {
         TextView textView;

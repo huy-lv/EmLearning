@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 
 public abstract class BaseAdapter<T, VH extends BaseAdapter.SViewHolder> extends RecyclerView.Adapter<VH> {
     protected Activity activity;
-    ArrayList<T> objectList;
+    public ArrayList<T> objectList;
 
     public BaseAdapter(Activity a, ArrayList<T> l){
         activity = a;

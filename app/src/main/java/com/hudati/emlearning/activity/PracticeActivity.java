@@ -5,45 +5,37 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.hudati.emlearning.R;
-import com.hudati.emlearning.adapter.BookExpandableItemAdapter;
-import com.hudati.emlearning.adapter.OnListItemClickMessageListener;
+import com.hudati.emlearning.adapter.SectionAdapter;
 import com.hudati.emlearning.base.BaseToolbarActivity;
+import com.hudati.emlearning.model.Section;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
 /**
- * Created by huylv on 22-Mar-17.
+ * Created by huylv on 06-Apr-17.
  */
 
-public class PracticeActivity extends BaseToolbarActivity {
+public class PracticeActivity extends BaseToolbarActivity{
 
-    @BindView(R.id.practice_rv)
-    RecyclerView practice_rv;
-    private RecyclerView.Adapter adapter;
+    @BindView(R.id.section_list_rv)
+    RecyclerView section_list_rv;
+    ArrayList<Section> sections;
+    SectionAdapter sectionAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RecyclerViewExpandableItemManager expMgr = new RecyclerViewExpandableItemManager(null);
-
-
-        adapter = new BookExpandableItemAdapter(expMgr, new OnListItemClickMessageListener() {
-            @Override
-            public void onItemClicked(String message) {
-
-            }
-        });
-        adapter = expMgr.createWrappedAdapter(adapter);
-//        adapter = new DemoHeaderFooterAdapter(adapter, clickListener);
-
-        practice_rv.setAdapter(adapter);
-
-        practice_rv.setLayoutManager(new LinearLayoutManager(this));
-
-
+        sections =  new ArrayList<>();
+        for(int i=0;i<5;i++){
+            sections.add(new Section());
+        }
+        sectionAdapter = new SectionAdapter(this,sections);
+        section_list_rv.setAdapter(sectionAdapter);
+        section_list_rv.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/ripple"
+    android:clickable="true"
+    android:id="@+id/item_skill_rl"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_listening"
+        android:id="@+id/item_skill_iv" />
+    <TextView
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Skill name"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:id="@+id/item_skill_tv"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/item_skill_play_iv"
+        android:layout_toRightOf="@+id/item_skill_iv"
+        android:layout_toEndOf="@+id/item_skill_iv" />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_skill_play_iv"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/item_skill_play_iv" />
+
+</RelativeLayout>
