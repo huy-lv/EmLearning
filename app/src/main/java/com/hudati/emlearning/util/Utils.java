@@ -22,6 +22,7 @@ public class Utils {
     public static final String INTENT_KEY_BOOK_NAME = "INTENT_KEY_BOOK_NAME";
     public static final String INTENT_KEY_PRACTICE_NAME = "INTENT_KEY_PRACTICE_NAME";
     public static final String INTENT_KEY_PRACTICE_ACTION = "INTENT_KEY_PRACTICE_ACTION";
+    public static final String INTENT_KEY_START_PRACTICE = "INTENT_KEY_START_PRACTICE";
     public static RootApiResponse.APIList apiList;
 
     public static String YOUTUBE_DEVELOPER_KEY = "AIzaSyAQjlRkYGkV2X7pmxOufK_7XR9afuW44hI";

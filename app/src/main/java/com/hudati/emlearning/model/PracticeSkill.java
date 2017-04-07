@@ -33,15 +33,6 @@ public class PracticeSkill {
     @SerializedName("practiceIdRef")
     String practiceIdRef;
 
-    private class Action {
-        @SerializedName("actionPractice")
-        String actionPractice;
-
-        public String getActionPractice() {
-            return actionPractice;
-        }
-    }
-
     public long getCreatedDate() {
         return createdDate;
     }
@@ -88,5 +79,14 @@ public class PracticeSkill {
 
     public String getPracticeIdRef() {
         return practiceIdRef;
+    }
+
+    public class Action {
+        @SerializedName("actionPractice")
+        String actionPractice;
+
+        public String getActionPractice() {
+            return actionPractice;
+        }
     }
 }

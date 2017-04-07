@@ -3,10 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <include layout="@layout/tool_bar" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/section_list_rv"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/include">
+
+            <com.hudati.emlearning.custom.NSViewPager
+                android:id="@+id/practice_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ProgressBar
+                android:id="@+id/practice_pb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/layout_media" />
+    </RelativeLayout>
 </LinearLayout>

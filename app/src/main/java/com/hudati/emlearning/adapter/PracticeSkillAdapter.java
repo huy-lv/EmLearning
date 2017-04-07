@@ -1,7 +1,6 @@
 package com.hudati.emlearning.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -49,7 +48,6 @@ public class PracticeSkillAdapter extends BaseAdapter<PracticeSkill,PracticeSkil
         vh.item_skill_rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent(activity,)
                 PracticeSkillDetailDialog p = new PracticeSkillDetailDialog(activity,practiceSkill);
                 p.show();
             }

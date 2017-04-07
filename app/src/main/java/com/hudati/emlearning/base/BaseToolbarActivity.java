@@ -3,7 +3,6 @@ package com.hudati.emlearning.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,12 +34,6 @@ public abstract class BaseToolbarActivity extends AppCompatActivity implements V
         toolbar_back.setOnClickListener(this);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.toolbar_back) finish();
-        return super.onOptionsItemSelected(item);
-    }
-
     protected void setActionbarTitle(String t){
         toolbar_text.setText(t);
     }
@@ -51,8 +44,12 @@ public abstract class BaseToolbarActivity extends AppCompatActivity implements V
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.toolbar_back:
-                finish();
+                onClickBack();
                 break;
         }
+    }
+
+    protected void onClickBack() {
+        finish();
     }
 }

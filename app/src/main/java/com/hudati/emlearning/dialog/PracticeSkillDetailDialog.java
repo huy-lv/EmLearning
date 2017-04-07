@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.hudati.emlearning.R;
 import com.hudati.emlearning.activity.PracticeActivity;
 import com.hudati.emlearning.model.PracticeSkill;
+import com.hudati.emlearning.util.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +29,7 @@ public class PracticeSkillDetailDialog extends Dialog {
     Context context;
     PracticeSkill practiceSkill;
 
-//    @BindView(R.id.dialog_practice_title)
+    //    @BindView(R.id.dialog_practice_title)
 //    TextView dialog_practice_title;
     @BindView(R.id.dialog_practice_description)
     WebView dialog_practice_description;
@@ -70,11 +71,12 @@ public class PracticeSkillDetailDialog extends Dialog {
         dialog_practice_time.setText(String.valueOf(practiceSkill.getPracticeTime()));
         dialog_practice_numOfQuestion.setText(String.valueOf(practiceSkill.getPracticeNumberQuestion()));
 
-        dialog_practice_description.loadDataWithBaseURL(null,practiceSkill.getPracticeDescription(),"text/html","utf-8",null);
+        dialog_practice_description.loadDataWithBaseURL(null, practiceSkill.getPracticeDescription(), "text/html", "utf-8", null);
         dialog_practice_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context,PracticeActivity.class);
+                Intent i = new Intent(context, PracticeActivity.class);
+                i.putExtra(Utils.INTENT_KEY_START_PRACTICE, practiceSkill.getActions().getActionPractice());
                 context.startActivity(i);
             }
         });

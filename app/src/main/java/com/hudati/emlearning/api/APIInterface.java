@@ -39,4 +39,10 @@ public interface APIInterface {
 
     @GET
     Call<PracticeListResponse> loadPracticeList(@Url String url);
+
+    @GET
+    Call<SectionResponse> loadSections(@Url String url);
+
+    @GET
+    Call<QuestionResponse> loadQuestion(@Url String url);
 }
