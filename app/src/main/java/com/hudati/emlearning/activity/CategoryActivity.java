@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.hudati.emlearning.R;
@@ -26,10 +28,13 @@ import retrofit2.Response;
 
 public class CategoryActivity extends BaseToolbarActivity {
 
+    @BindView(R.id.practice_list_pb)
+    ProgressBar phase_list_pb;
+
     @BindView(R.id.section_list_rv)
-    RecyclerView practice_rv;
-    private RecyclerView.Adapter adapter;
+    RecyclerView phase_list_rv;
     GroupLectureAdapter groupAdapter;
+    private RecyclerView.Adapter adapter;
     private RecyclerViewExpandableItemManager expMgr;
 
     @Override
@@ -55,6 +60,7 @@ public class CategoryActivity extends BaseToolbarActivity {
                     groupAdapter.groupLectures.add(groupLectures);
                     adapter.notifyDataSetChanged();
                     groupAdapter.notifyDataSetChanged();
+                    phase_list_pb.setVisibility(View.GONE);
                 }
             }
 
@@ -65,14 +71,14 @@ public class CategoryActivity extends BaseToolbarActivity {
         });
 
         adapter = expMgr.createWrappedAdapter(groupAdapter);
-        practice_rv.setAdapter(adapter);
-        practice_rv.setLayoutManager(new LinearLayoutManager(CategoryActivity.this));
+        phase_list_rv.setAdapter(adapter);
+        phase_list_rv.setLayoutManager(new LinearLayoutManager(CategoryActivity.this));
 
     }
 
-
+    //category activity va practice list activity deu dung practice list layout
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_practice;
+        return R.layout.activity_practice_list;
     }
 }
