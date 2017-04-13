@@ -6,8 +6,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".MainActivity">
@@ -19,11 +21,12 @@
         </activity>
         <activity android:name=".activity.CategoryActivity" />
         <activity android:name=".activity.BookListActivity" />
-        <activity android:name=".activity.ReadActivity" />
+        <activity android:name=".activity.ReadBookActivity" />
         <activity android:name=".activity.LectureActivity" />
         <activity android:name=".activity.PracticeDetailActivity" />
         <activity android:name=".activity.PracticeListActivity"/>
-        <activity android:name=".activity.PracticeActivity"/>
+        <activity android:name=".activity.ListeningActivity" />
+        <activity android:name=".activity.ReadingActivity" />
     </application>
 
 </manifest>

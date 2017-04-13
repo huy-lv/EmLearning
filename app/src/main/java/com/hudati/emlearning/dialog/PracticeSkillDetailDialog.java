@@ -14,7 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hudati.emlearning.R;
-import com.hudati.emlearning.activity.PracticeActivity;
+import com.hudati.emlearning.activity.ListeningActivity;
+import com.hudati.emlearning.activity.ReadingActivity;
 import com.hudati.emlearning.model.PracticeSkill;
 import com.hudati.emlearning.util.Utils;
 
@@ -75,9 +76,20 @@ public class PracticeSkillDetailDialog extends Dialog {
         dialog_practice_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context, PracticeActivity.class);
-                i.putExtra(Utils.INTENT_KEY_START_PRACTICE, practiceSkill.getActions().getActionPractice());
-                context.startActivity(i);
+                switch (practiceSkill.getPracticeType()) {
+                    case Listening:
+                        Intent i = new Intent(context, ListeningActivity.class);
+                        i.putExtra(Utils.INTENT_KEY_START_LISTENING, practiceSkill.getActions().getActionPractice());
+                        context.startActivity(i);
+                        dismiss();
+                        break;
+                    case Reading:
+                        Intent i2 = new Intent(context, ReadingActivity.class);
+                        i2.putExtra(Utils.INTENT_KEY_START_READING, practiceSkill.getActions().getActionPractice());
+                        context.startActivity(i2);
+                        dismiss();
+                        break;
+                }
             }
         });
     }

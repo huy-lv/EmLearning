@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,10 +16,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by huylv on 22-Mar-17.
+ * Created by huylv on 13-Apr-17.
  */
 
-public abstract class BaseToolbarActivity extends AppCompatActivity implements View.OnClickListener {
+public abstract class BaseFullScreenActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.toolbar)
     protected RelativeLayout toolbar;
     @BindView(R.id.toolbar_back)
@@ -28,6 +30,10 @@ public abstract class BaseToolbarActivity extends AppCompatActivity implements V
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(getLayoutId());
         ButterKnife.bind(this);
 
@@ -42,7 +48,7 @@ public abstract class BaseToolbarActivity extends AppCompatActivity implements V
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.toolbar_back:
                 onClickBack();
                 break;

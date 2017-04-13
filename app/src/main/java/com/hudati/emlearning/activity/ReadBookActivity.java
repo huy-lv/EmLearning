@@ -32,7 +32,7 @@ import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_URL;
  * Created by huylv on 28-Mar-17.
  */
 
-public class ReadActivity extends BaseToolbarActivity implements MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, SeekBar.OnSeekBarChangeListener {
+public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, SeekBar.OnSeekBarChangeListener {
     private final Handler handler = new Handler();
     @BindView(R.id.read_wv)
     WebView read_wv;

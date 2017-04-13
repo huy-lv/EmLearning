@@ -1,7 +1,6 @@
 package com.hudati.emlearning.adapter;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -65,11 +64,11 @@ public class PracticeSkillAdapter extends BaseAdapter<PracticeSkill,PracticeSkil
                 break;
             case Writing:
                 res = R.drawable.ic_writing;
-                color = Color.parseColor("#efac4e");
+                color = parseColor("#efac4e");
                 break;
             case Speaking:
                 res = R.drawable.ic_speaking;
-                color = Color.parseColor("#d8534f");
+                color = parseColor("#d8534f");
                 break;
         }
         vh.item_skill_iv.setImageResource(res);

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.hudati.emlearning.R;
-import com.hudati.emlearning.activity.ReadActivity;
+import com.hudati.emlearning.activity.ReadBookActivity;
 import com.hudati.emlearning.base.BaseAdapter;
 import com.hudati.emlearning.model.Book;
 import com.hudati.emlearning.util.Utils;
@@ -48,7 +48,7 @@ public class BookAdapter extends BaseAdapter<Book, BookAdapter.BookVH> {
         bookVH.book_cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(activity, ReadActivity.class);
+                Intent i = new Intent(activity, ReadBookActivity.class);
                 i.putExtra(Utils.INTENT_KEY_BOOK_NAME,book.getBookName());
                 i.putExtra(Utils.INTENT_KEY_BOOK_URL,book.getBookUrl());
                 activity.startActivity(i);

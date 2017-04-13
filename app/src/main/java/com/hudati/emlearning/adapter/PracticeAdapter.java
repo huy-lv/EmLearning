@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.hudati.emlearning.R;
 import com.hudati.emlearning.activity.PracticeDetailActivity;
-import com.hudati.emlearning.activity.ReadActivity;
 import com.hudati.emlearning.base.BaseAdapter;
 import com.hudati.emlearning.model.Practice;
 import com.hudati.emlearning.util.Utils;

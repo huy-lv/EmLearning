@@ -1,14 +1,12 @@
-package com.hudati.emlearning.model;
+package com.hudati.emlearning.api;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-
 /**
- * Created by huylv on 06-Apr-17.
+ * Created by huylv on 13-Apr-17.
  */
 
-public class Section {
+public class ReadingSection {
     @SerializedName("createdDate")
     long createdDate;
     @SerializedName("updatedDate")
@@ -20,33 +18,15 @@ public class Section {
     @SerializedName("sectionSubTitle")
     String sectionSubTitle;
     @SerializedName("sectionNumber")
-    String sectionNumber;
+    int sectionNumber;
     @SerializedName("sectionImage")
     String sectionImage;
     @SerializedName("sectionContent")
     String sectionContent;
     @SerializedName("actions")
-    Action actions;
+    Action action;
     @SerializedName("informationIdRef")
     String informationIdRef;
-    ArrayList<Question> questions;
-
-    @Override
-    public String toString() {
-        return "Section{" +
-                "createdDate=" + createdDate +
-                ", updatedDate=" + updatedDate +
-                ", sectionId='" + sectionId + '\'' +
-                ", sectionTitle='" + sectionTitle + '\'' +
-                ", sectionSubTitle='" + sectionSubTitle + '\'' +
-                ", sectionNumber='" + sectionNumber + '\'' +
-                ", sectionImage='" + sectionImage + '\'' +
-                ", sectionContent='" + sectionContent + '\'' +
-                ", actions=" + actions +
-                ", informationIdRef='" + informationIdRef + '\'' +
-                ", questions=" + questions +
-                '}';
-    }
 
     public long getCreatedDate() {
         return createdDate;
@@ -68,7 +48,7 @@ public class Section {
         return sectionSubTitle;
     }
 
-    public String getSectionNumber() {
+    public int getSectionNumber() {
         return sectionNumber;
     }
 
@@ -80,20 +60,12 @@ public class Section {
         return sectionContent;
     }
 
-    public Action getActions() {
-        return actions;
+    public Action getAction() {
+        return action;
     }
 
     public String getInformationIdRef() {
         return informationIdRef;
-    }
-
-    public ArrayList<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(ArrayList<Question> questions) {
-        this.questions = questions;
     }
 
     public class Action {

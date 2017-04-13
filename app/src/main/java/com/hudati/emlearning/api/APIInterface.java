@@ -45,4 +45,10 @@ public interface APIInterface {
 
     @GET
     Call<QuestionResponse> loadQuestion(@Url String url);
+
+    @GET
+    Call<ReadingTestResponse> loadReadingTest(@Url String url);
+
+    @GET
+    Call<ReadingQuestionResponse> loadReadingAnswer(@Url String url);
 }
