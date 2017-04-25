@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hudati.emlearning.R;
@@ -39,8 +39,8 @@ public class ReadingFragment extends BaseFragment {
     WebView reading_wv;
     @BindView(R.id.reading_question_pb)
     ProgressBar reading_question_pb;
-    @BindView(R.id.reading_question_fl)
-    FrameLayout reading_question_fl;
+    @BindView(R.id.reading_question_rl)
+    RelativeLayout reading_question_rl;
     @BindView(R.id.reading_question_content)
     LinearLayout reading_question_content;
     private ReadingSection readingSection;

@@ -14,10 +14,31 @@
         app:tabGravity="fill"
         app:tabMode="fixed" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <FrameLayout
+        android:id="@+id/main_activity_fl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tabs"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_below="@+id/tabs">
+
+        <ProgressBar
+            android:id="@+id/main_activity_pb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/main_activity_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/retry"
+            android:textSize="16sp" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tabs"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </FrameLayout>
 </RelativeLayout>

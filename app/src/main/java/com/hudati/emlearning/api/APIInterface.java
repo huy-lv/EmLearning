@@ -51,4 +51,7 @@ public interface APIInterface {
 
     @GET
     Call<ReadingQuestionResponse> loadReadingAnswer(@Url String url);
+
+    @GET
+    Call<AudioListRespone> loadAudioList(@Url String url);
 }

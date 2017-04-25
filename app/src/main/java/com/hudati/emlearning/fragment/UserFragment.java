@@ -3,6 +3,7 @@ package com.hudati.emlearning.fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -46,7 +47,9 @@ public class UserFragment extends BaseFragment {
         createChart();
 
         Bitmap blur = BitmapFactory.decodeResource(getResources(), R.mipmap.cover_profile);
-        user_cover.setImageBitmap(Utils.fastblur(blur, 5, 5));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            user_cover.setImageBitmap(Utils.blurRenderScript(activity, blur, 5));
+        }
     }
 
     private void createChart() {

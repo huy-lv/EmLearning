@@ -24,6 +24,27 @@ public class Book {
     @SerializedName("organIdRef")
     String organIdRef;
 
+    boolean isDownloaded;
+
+    public Book(boolean isDeleted, String bookId, String bookName, String bookDescription, String bookUrl, String bookAudio, String bookImageUrl, String organIdRef) {
+        this.isDeleted = isDeleted;
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.bookDescription = bookDescription;
+        this.bookUrl = bookUrl;
+        this.bookAudio = bookAudio;
+        this.bookImageUrl = bookImageUrl;
+        this.organIdRef = organIdRef;
+    }
+
+    public boolean isDownloaded() {
+        return isDownloaded;
+    }
+
+    public void setDownloaded(boolean downloaded) {
+        isDownloaded = downloaded;
+    }
+
     public boolean isDeleted() {
         return isDeleted;
     }
@@ -85,17 +106,6 @@ public class Book {
     }
 
     public void setOrganIdRef(String organIdRef) {
-        this.organIdRef = organIdRef;
-    }
-
-    public Book(boolean isDeleted, String bookId, String bookName, String bookDescription, String bookUrl, String bookAudio, String bookImageUrl, String organIdRef) {
-        this.isDeleted = isDeleted;
-        this.bookId = bookId;
-        this.bookName = bookName;
-        this.bookDescription = bookDescription;
-        this.bookUrl = bookUrl;
-        this.bookAudio = bookAudio;
-        this.bookImageUrl = bookImageUrl;
         this.organIdRef = organIdRef;
     }
 }

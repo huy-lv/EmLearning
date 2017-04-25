@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
-
-
+    android:layout_height="match_parent">
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,135 +12,144 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp">
+            <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="200dp">-->
 
                 <com.daimajia.slider.library.SliderLayout
                     android:id="@+id/main_image_slider"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
 
-                <ProgressBar
-                    android:id="@+id/banner_pb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-            </FrameLayout>
+            <!--<ProgressBar-->
+            <!--android:id="@+id/banner_pb"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center" />-->
+            <!--</FrameLayout>-->
 
             <LinearLayout
-                android:id="@+id/main_layout_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Category"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <FrameLayout
+                <LinearLayout
+                    android:id="@+id/main_layout_category"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <ProgressBar
-                        android:id="@+id/main_layout_category_pb"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-                </FrameLayout>
+                        android:layout_marginTop="10dp"
+                        android:text="Category"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-            </LinearLayout>
+                    <!--<FrameLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
 
-            <RelativeLayout
-                android:id="@+id/home_title_test"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:background="?attr/selectableItemBackground">
+                    <!--<ProgressBar-->
+                    <!--android:id="@+id/main_layout_category_pb"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center" />-->
+                    <!--</FrameLayout>-->
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/home_title_test"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Test"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
-                <TextView
-                    style="@style/textMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Test"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/textMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+
+                <!--<FrameLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/test_list_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <ProgressBar
-                    android:layout_gravity="center"
-                    android:id="@+id/test_list_pb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </FrameLayout>
+                <!--<ProgressBar-->
+                <!--android:id="@+id/test_list_pb"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center" />-->
+                <!--</FrameLayout>-->
 
-            <RelativeLayout
-                android:id="@+id/home_title_book"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:background="?attr/selectableItemBackground">
-
-                <TextView
-                    style="@style/textMore"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/home_title_book"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true" />
+                    android:layout_marginTop="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:text="Book"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+                    <TextView
+                        style="@style/textMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="Book"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
-                <ProgressBar
-                    android:layout_gravity="center"
-                    android:id="@+id/book_list_pb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!--<FrameLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<ProgressBar-->
+                <!--android:id="@+id/book_list_pb"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center" />-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/book_list_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-            </FrameLayout>
+                <!--</FrameLayout>-->
+            </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -155,4 +160,4 @@
     <!--app:srv_layoutMode="linearVertical">-->
 
     <!--</com.jaychang.srv.SimpleRecyclerView>-->
-</RelativeLayout>
+</FrameLayout>

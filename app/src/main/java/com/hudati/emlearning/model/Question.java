@@ -22,7 +22,7 @@ public class Question {
     @SerializedName("questionSubTitle")
     String questionSubTitle;
     @SerializedName("questionType")
-    String questionType;
+    QuestionType questionType;
     @SerializedName("questionImage")
     String questionImage;
     @SerializedName("questionContent")
@@ -60,7 +60,7 @@ public class Question {
         return questionSubTitle;
     }
 
-    public String getQuestionType() {
+    public QuestionType getQuestionType() {
         return questionType;
     }
 
@@ -78,5 +78,23 @@ public class Question {
 
     public String getSectionIdRef() {
         return sectionIdRef;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "createdDate=" + createdDate +
+                ", updatedDate=" + updatedDate +
+                ", questionId='" + questionId + '\'' +
+                ", questionStart=" + questionStart +
+                ", questionEnd=" + questionEnd +
+                ", questionTitle='" + questionTitle + '\'' +
+                ", questionSubTitle='" + questionSubTitle + '\'' +
+                ", questionType=" + questionType +
+                ", questionImage='" + questionImage + '\'' +
+                ", questionContent='" + questionContent + '\'' +
+                ", questionOptions='" + questionOptions + '\'' +
+                ", sectionIdRef='" + sectionIdRef + '\'' +
+                '}';
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -15,16 +16,23 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 import com.hudati.emlearning.R;
+import com.hudati.emlearning.api.APIClient;
+import com.hudati.emlearning.api.AudioListRespone;
 import com.hudati.emlearning.base.BaseToolbarActivity;
 import com.hudati.emlearning.util.Utils;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_MP3;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_NAME;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_URL;
 
@@ -41,18 +49,29 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     @BindView(R.id.toolbar_bt_download)
     ImageView toolbar_bt_download;
     String pdfUrl;
-    @BindView(R.id.read_sb)
-    SeekBar read_sb;
-    @BindView(R.id.read_rewind)
+    @BindView(R.id.media_sb)
+    SeekBar media_sb;
+    @BindView(R.id.media_rewind)
     ImageView read_previous;
-    @BindView(R.id.read_play)
+    @BindView(R.id.media_play)
     ImageView read_play;
-    @BindView(R.id.read_forward)
+    @BindView(R.id.media_forward)
     ImageView read_forward;
+    @BindView(R.id.read_book_sliding_layout)
+    SlidingUpPanelLayout read_book_sliding_layout;
     Context c;
+    @BindView(R.id.media_list)
+    ImageView media_list;
+    @BindView(R.id.media_collapse)
+    ImageView media_collapse;
+    @BindView(R.id.read_book_list_audio)
+    RecyclerView read_book_list_audio;
+    @BindView(R.id.read_book_audio_list_pb)
+    ProgressBar read_book_audio_list_pb;
     private String fileName;
     private MediaPlayer mediaPlayer;
     private int mediaFileLengthInMilliseconds;
+    private String audioUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +79,7 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
 
         setActionbarTitle(getIntent().getStringExtra(INTENT_KEY_BOOK_NAME));
         pdfUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_URL);
+        audioUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_MP3);
         fileName = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1, pdfUrl.length());
         c = this;
 
@@ -94,37 +114,82 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
             }
         });
 
+        //audio list
+        read_book_sliding_layout.setTouchEnabled(false);
+        //adapter////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //play media
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setOnCompletionListener(this);
-        read_sb.setOnSeekBarChangeListener(this);
+        media_sb.setOnSeekBarChangeListener(this);
+
+        //prepare datasource
+        if (audioUrl.contains("drive.google.com")) {
+            APIClient.getInterface().loadAudioList(audioUrl).enqueue(new Callback<AudioListRespone>() {
+                @Override
+                public void onResponse(Call<AudioListRespone> call, Response<AudioListRespone> response) {
+                    read_book_audio_list_pb.setVisibility(View.INVISIBLE);
+
+                }
+
+                @Override
+                public void onFailure(Call<AudioListRespone> call, Throwable t) {
+
+                }
+            });
+//            audioUrl = "https://drive.google.com/uc?id=0BxD3fIhb7pyXaEt4SUtDbENkTkk&export=download";
+            prepareWithUrl(audioUrl);
+            media_collapse.setVisibility(View.VISIBLE);
+            media_list.setVisibility(View.VISIBLE);
+        } else {
+            prepareWithUrl(audioUrl);
+        }
+
     }
 
-
-    @OnClick(R.id.read_rewind)
-    void rewind() {
-
+    @OnClick(R.id.media_list)
+    void showMediaList() {
+        read_book_sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 
-    @OnClick(R.id.read_forward)
-    void forward() {
-
+    @OnClick(R.id.media_collapse)
+    void collapseMediaList() {
+        read_book_sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
-    @OnClick(R.id.read_play)
-    void play() {
+    void prepareWithUrl(String url) {
         try {
-            mediaPlayer.setDataSource("http://s1mp3.r9s70.vcdn.vn/3fe01ae2f4a61df844b7/978826610756853978?key=aXj5gOeuVFxpiBTP8c1bfA&expires=1491508470&filename=Yeu-5-Rhymastic.mp3"); // setup song from https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3 URL to mediaplayer data source
+            mediaPlayer.setDataSource(url);              //mediaPlayer.setDataSource("http://s95.stream.nixcdn.com/bf6e5b0294bab1950d560c5827dd728b/58f2fc02/NhacCuaTui935/Yeu5-Rhymastic-4756973.mp3?t=1492319358395"); // setup song from https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3 URL to mediaplayer data source
             mediaPlayer.prepare(); // you must call this method after setup the datasource in setDataSource method. After calling prepare() the instance of MediaPlayer starts load data from URL to internal buffer.
         } catch (Exception e) {
             e.printStackTrace();
         }
         mediaFileLengthInMilliseconds = mediaPlayer.getDuration(); // gets the song length in milliseconds from URL
+    }
+
+    @OnClick(R.id.media_rewind)
+    void rewind() {
+        if (mediaPlayer.isPlaying()) {
+            int playPositionInMillisecconds = mediaPlayer.getCurrentPosition() - 5000;
+            mediaPlayer.seekTo(playPositionInMillisecconds);
+        }
+    }
+
+    @OnClick(R.id.media_forward)
+    void forward() {
+        if (mediaPlayer.isPlaying()) {
+            int playPositionInMillisecconds = mediaPlayer.getCurrentPosition() + 5000;
+            mediaPlayer.seekTo(playPositionInMillisecconds);
+        }
+    }
+
+    @OnClick(R.id.media_play)
+    void play() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
             read_play.setImageResource(R.drawable.ic_pause_black_24dp);
+            media_sb.setEnabled(true);
         } else {
             mediaPlayer.pause();
             read_play.setImageResource(R.drawable.ic_skill_play_iv);
@@ -133,7 +198,7 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     }
 
     private void primarySeekBarProgressUpdater() {
-        read_sb.setProgress((int) (((float) mediaPlayer.getCurrentPosition() / mediaFileLengthInMilliseconds) * 100)); // This math construction give a percentage of "was playing"/"song length"
+        media_sb.setProgress((int) (((float) mediaPlayer.getCurrentPosition() / mediaFileLengthInMilliseconds) * 100)); // This math construction give a percentage of "was playing"/"song length"
         if (mediaPlayer.isPlaying()) {
             Runnable notification = new Runnable() {
                 public void run() {
@@ -146,12 +211,12 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_read;
+        return R.layout.activity_read_book;
     }
 
     @Override
     public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-        read_sb.setSecondaryProgress(i);
+        media_sb.setSecondaryProgress(i);
     }
 
     @Override
@@ -172,7 +237,7 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (mediaPlayer.isPlaying()) {
-            int playPositionInMillisecconds = (mediaFileLengthInMilliseconds / 100) * read_sb.getProgress();
+            int playPositionInMillisecconds = (mediaFileLengthInMilliseconds / 100) * media_sb.getProgress();
             mediaPlayer.seekTo(playPositionInMillisecconds);
         }
     }

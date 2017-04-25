@@ -25,6 +25,7 @@ import butterknife.BindView;
 
 public class BookAdapter extends BaseAdapter<Book, BookAdapter.BookVH> {
     Gson gson;
+
     public BookAdapter(Activity a, ArrayList<Book> l) {
         super(a, l);
         gson = new Gson();
@@ -49,17 +50,29 @@ public class BookAdapter extends BaseAdapter<Book, BookAdapter.BookVH> {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(activity, ReadBookActivity.class);
-                i.putExtra(Utils.INTENT_KEY_BOOK_NAME,book.getBookName());
-                i.putExtra(Utils.INTENT_KEY_BOOK_URL,book.getBookUrl());
+                i.putExtra(Utils.INTENT_KEY_BOOK_NAME, book.getBookName());
+                i.putExtra(Utils.INTENT_KEY_BOOK_URL, book.getBookUrl());
+                i.putExtra(Utils.INTENT_KEY_BOOK_MP3, book.getBookAudio());
                 activity.startActivity(i);
             }
         });
+        if (book.isDownloaded()) {
+            bookVH.item_book_download_iv.setVisibility(View.VISIBLE);
+        } else {
+            bookVH.item_book_download_iv.setVisibility(View.GONE);
+        }
     }
 
     class BookVH extends BaseAdapter.SViewHolder {
-        @BindView(R.id.book_name)        TextView book_name;
-        @BindView(R.id.book_image)        ImageView book_image;
-        @BindView(R.id.book_cv)        CardView book_cv;
+        @BindView(R.id.item_book_download_iv)
+        ImageView item_book_download_iv;
+        @BindView(R.id.book_name)
+        TextView book_name;
+        @BindView(R.id.book_image)
+        ImageView book_image;
+        @BindView(R.id.book_cv)
+        CardView book_cv;
+
         BookVH(View itemView) {
             super(itemView);
         }

@@ -80,6 +80,7 @@ public class PracticeSkillDetailDialog extends Dialog {
                     case Listening:
                         Intent i = new Intent(context, ListeningActivity.class);
                         i.putExtra(Utils.INTENT_KEY_START_LISTENING, practiceSkill.getActions().getActionPractice());
+                        i.putExtra(Utils.INTENT_KEY_START_LISTENING_MP3, practiceSkill.getPracticeSound());
                         context.startActivity(i);
                         dismiss();
                         break;

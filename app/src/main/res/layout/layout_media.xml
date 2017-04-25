@@ -1,47 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/media_layout_height"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <SeekBar
-        android:id="@+id/read_sb"
+        android:id="@+id/media_sb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:max="99" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/media_sb">
 
         <ImageView
-            android:id="@+id/read_rewind"
+            android:id="@+id/media_rewind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/media_play"
+            android:layout_toStartOf="@+id/media_play"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_fast_rewind_black_24dp" />
 
         <ImageView
-            android:id="@+id/read_play"
+            android:id="@+id/media_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_skill_play_iv" />
 
         <ImageView
-            android:id="@+id/read_forward"
+            android:id="@+id/media_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/media_play"
+            android:layout_toRightOf="@+id/media_play"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_fast_forward_black_24dp" />
-    </LinearLayout>
-</LinearLayout>
+
+        <ImageView
+            android:id="@+id/media_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_playlist_play_black_24dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/media_collapse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_expand_more_black_24dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

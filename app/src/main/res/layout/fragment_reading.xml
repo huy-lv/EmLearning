@@ -5,8 +5,8 @@
     android:orientation="vertical"
     android:weightSum="2">
 
-    <FrameLayout
-        android:id="@+id/reading_question_fl"
+    <RelativeLayout
+        android:id="@+id/reading_question_rl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -24,21 +24,34 @@
             </LinearLayout>
         </ScrollView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_alignParentBottom="true"
+            android:background="#001aff" />
+
         <ProgressBar
             android:id="@+id/reading_question_pb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_alignParentTop="true"
+            android:background="#001aff" />
 
         <WebView
             android:id="@+id/reading_wv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

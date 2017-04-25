@@ -34,17 +34,17 @@ public class Section {
     @Override
     public String toString() {
         return "Section{" +
-                "createdDate=" + createdDate +
-                ", updatedDate=" + updatedDate +
-                ", sectionId='" + sectionId + '\'' +
+//                "createdDate=" + createdDate +
+//                ", updatedDate=" + updatedDate +
+//                ", sectionId='" + sectionId + '\'' +
                 ", sectionTitle='" + sectionTitle + '\'' +
-                ", sectionSubTitle='" + sectionSubTitle + '\'' +
-                ", sectionNumber='" + sectionNumber + '\'' +
-                ", sectionImage='" + sectionImage + '\'' +
-                ", sectionContent='" + sectionContent + '\'' +
-                ", actions=" + actions +
-                ", informationIdRef='" + informationIdRef + '\'' +
-                ", questions=" + questions +
+//                ", sectionSubTitle='" + sectionSubTitle + '\'' +
+//                ", sectionNumber='" + sectionNumber + '\'' +
+//                ", sectionImage='" + sectionImage + '\'' +
+//                ", sectionContent='" + sectionContent + '\'' +
+//                ", actions=" + actions +
+//                ", informationIdRef='" + informationIdRef + '\'' +
+//                ", questions=" + questions +
                 '}';
     }
 
