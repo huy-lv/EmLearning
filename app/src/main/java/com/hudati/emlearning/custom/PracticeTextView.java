@@ -37,6 +37,7 @@ public class PracticeTextView extends android.support.v7.widget.AppCompatTextVie
     private void init() {
         setTextColor(Color.BLACK);
         setTextSize(20);
+        setPadding(getPaddingLeft(),10,getPaddingRight(),10);
     }
 
 }

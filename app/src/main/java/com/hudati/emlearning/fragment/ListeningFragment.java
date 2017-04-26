@@ -1,11 +1,11 @@
 package com.hudati.emlearning.fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +14,7 @@ import com.hudati.emlearning.R;
 import com.hudati.emlearning.activity.ListeningActivity;
 import com.hudati.emlearning.base.BaseFragment;
 import com.hudati.emlearning.custom.PracticeEditText;
+import com.hudati.emlearning.custom.PracticeSpinner;
 import com.hudati.emlearning.custom.PracticeTextView;
 import com.hudati.emlearning.model.Question;
 import com.hudati.emlearning.model.Sentence;
@@ -105,24 +106,31 @@ public class ListeningFragment extends BaseFragment {
                     //determine edit text or checkbox, spinner, ...
                     switch (question.getQuestionType()) {
                         case InputText:
+                            //dien vao cho trong
                             PracticeEditText et = new PracticeEditText(activity);
                             flowLayout.addView(et);
                             break;
-                        case Dropdown:
-
-                            break;
                         case MultiChoice:
-                            String cha = word.substring(word.length() - 2, word.length() - 1);
-                            TextView tv = new PracticeTextView(activity, cha);
-                            tv.setTypeface(null, Typeface.BOLD);
-                            flowLayout.addView(tv);
-                            //add check box
+                            //select 2 answer
                             CheckBox cb = new CheckBox(activity);
                             flowLayout.addView(cb);
                             break;
                         case SingleChoice:
 
                             break;
+                        case Dropdown:
+                            PracticeSpinner sp = new PracticeSpinner(activity);
+                            String temp = word.split(":")[1];
+                            temp = temp.substring(0,temp.length()-1);
+                            String[] charr = temp.split(",");
+//                            String[] charr = new String[]{"A","B","V"};
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                                    activity, android.R.layout.simple_spinner_dropdown_item,charr);
+                            sp.setAdapter(adapter);
+                            flowLayout.addView(sp);
+                            break;
+                        default:
+                            Log.e("cxz","errorr 3");
                     }
                 } else {
                     PracticeTextView tv = new PracticeTextView(activity, word + space);

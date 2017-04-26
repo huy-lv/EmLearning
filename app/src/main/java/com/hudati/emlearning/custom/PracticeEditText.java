@@ -24,7 +24,7 @@ public class PracticeEditText extends android.support.v7.widget.AppCompatEditTex
     }
 
     private void init() {
-        setPadding(getPaddingLeft(), 0, getPaddingRight(), 0);
+//        setPadding(getPaddingLeft(), 0, getPaddingRight(), 0);
         setWidth(250);
     }
 
