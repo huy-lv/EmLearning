@@ -28,7 +28,7 @@ public class Utils {
     public static final String INTENT_KEY_CATEGORY_NAME = "INTENT_KEY_CATEGORY_NAME";
     public static final String INTENT_ACTION_LECTURE_YOUTUBE = "INTENT_ACTION_LECTURE_YOUTUBE";
     public static final String INTENT_KEY_BOOK_NAME = "INTENT_KEY_BOOK_NAME";
-    public static final String INTENT_KEY_PRACTICE_NAME = "INTENT_KEY_PRACTICE_NAME";
+    public static final String INTENT_KEY_PRACTICE_TITLE = "INTENT_KEY_PRACTICE_TITLE";
     public static final String INTENT_KEY_PRACTICE_ACTION = "INTENT_KEY_PRACTICE_ACTION";
     public static final String INTENT_KEY_START_LISTENING = "INTENT_KEY_START_LISTENING";
 
@@ -39,20 +39,13 @@ public class Utils {
     public static final String SP_CHECK_USER = "SP_CHECK_USER";
     public static final String SP_ACCESS_TOKEN = "SP_ACCESS_TOKEN";
     public static final String INTENT_KEY_BOOK_MP3 = "INTENT_KEY_BOOK_MP3";
+    public static final String INTENT_KEY_PRACTICE_SUBTITLE = "INTENT_KEY_PRACTICE_SUBTITLE";
     public static String ACCESS_TOKEN;
     public static boolean LOGGED_IN;
 
     public static RootApiResponse.APIList apiList;
 
     public static String YOUTUBE_DEVELOPER_KEY = "AIzaSyAQjlRkYGkV2X7pmxOufK_7XR9afuW44hI";
-//    public static ArrayList<Category> getCategoryList() {
-//        ArrayList<Category> c = new ArrayList<>();
-//        c.add(new Category("Listening", R.mipmap.category1));
-//        c.add(new Category("Writing", R.mipmap.category1));
-//        c.add(new Category("Reading", R.mipmap.category1));
-//        c.add(new Category("Speaking", R.mipmap.category1));
-//        return c;
-//    }
 
     public static int calculateNumOfColumns(Context context,int colWidth) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

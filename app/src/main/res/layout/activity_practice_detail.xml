@@ -24,13 +24,13 @@
                     android:layout_height="wrap_content"
                     android:text="Descriptionnnnnnnnnnnnnnn"
                     android:textSize="30sp"
-                    android:id="@+id/textView3" />
+                    android:id="@+id/practice_detail_subtitle" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/practice_detail_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView3"/>
+                    android:layout_below="@+id/practice_detail_subtitle"/>
 
 
             </RelativeLayout>

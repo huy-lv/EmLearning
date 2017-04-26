@@ -1,5 +1,7 @@
 package com.hudati.emlearning.api;
 
+import com.hudati.emlearning.BuildConfig;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -8,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class APIClient {
-    public static String BASE_URL = "http://45.118.133.196:8080/emilear/";
+    public static String BASE_URL = BuildConfig.BASE_URL;
 
     private static Retrofit retrofit = null;
 

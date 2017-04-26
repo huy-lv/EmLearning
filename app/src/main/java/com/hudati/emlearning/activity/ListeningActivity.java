@@ -60,6 +60,7 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
     private Handler handler = new Handler();
     private PagerAdapter pagerAdapter;
     private int currentPage;
+    private int iSection=0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
         sections = new ArrayList<>();
         currentPage = 0;
         mp3Url = getIntent().getStringExtra(Utils.INTENT_KEY_START_LISTENING_MP3);
-
+        Log.e("cxz","mp3url of listening:"+mp3Url);
         //load section
         Call<SectionResponse> call = APIClient.getInterface().loadSections(getIntent().getStringExtra(INTENT_KEY_START_LISTENING));
         call.enqueue(new Callback<SectionResponse>() {
@@ -79,7 +80,7 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
 
                 //add section to viewpager
                 listeningFragments = new ArrayList<>();
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < sections.size(); i++) {
                     ListeningFragment f = new ListeningFragment();
                     Bundle b = new Bundle();
                     b.putInt(FRAGMENT_KEY_PAGE, i);
@@ -112,17 +113,19 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setOnCompletionListener(this);
         media_sb.setOnSeekBarChangeListener(this);
-    }
-
-    @OnClick(R.id.media_play)
-    void play() {
         try {
             mediaPlayer.setDataSource(mp3Url != null ? mp3Url : ""); // setup song from https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3 URL to mediaplayer data source
             mediaPlayer.prepareAsync(); // you must call this method after setup the datasource in setDataSource method. After calling prepare() the instance of MediaPlayer starts load data from URL to internal buffer.
+            play();
         } catch (Exception e) {
             e.printStackTrace();
         }
         mediaFileLengthInMilliseconds = mediaPlayer.getDuration(); // gets the song length in milliseconds from URL
+
+    }
+
+    @OnClick(R.id.media_play)
+    void play() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
             read_play.setImageResource(R.drawable.ic_pause_black_24dp);
@@ -134,7 +137,11 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
     }
 
     private void primarySeekBarProgressUpdater() {
-        media_sb.setProgress((int) (((float) mediaPlayer.getCurrentPosition() / mediaFileLengthInMilliseconds) * 100)); // This math construction give a percentage of "was playing"/"song length"
+        float a = (float) mediaPlayer.getCurrentPosition();
+        float b = ((float)mediaPlayer.getCurrentPosition()/ mediaPlayer.getDuration());
+        int currentPos = (int) (b* 100);
+        Log.e("cxz","currentPos ="+currentPos+ " a "+a + " b "+ b);
+        media_sb.setProgress(currentPos); // This math construction give a percentage of "was playing"/"song length"
         if (mediaPlayer.isPlaying()) {
             Runnable notification = new Runnable() {
                 public void run() {
@@ -176,14 +183,10 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
                         sections.get(finalI).setQuestions(response.body().getQuestions());
                     }
 
-                    if (finalI == sections.size() - 1) {
-
-                        practice_pb.setVisibility(View.GONE);
-                        //        pagerAdapter.notifyDataSetChanged();
-                        pagerAdapter = new PracticePagerAdapter(getFragmentManager(), listeningFragments);
-                        practice_viewpager.setAdapter(pagerAdapter);
+                    iSection++;
+                    if (iSection == sections.size() - 1) {
+                        onLoadDone();
                     }
-
                 }
 
                 @Override
@@ -192,6 +195,13 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
                 }
             });
         }
+    }
+
+    private void onLoadDone() {
+        practice_pb.setVisibility(View.GONE);
+        //        pagerAdapter.notifyDataSetChanged();
+        pagerAdapter = new PracticePagerAdapter(getFragmentManager(), listeningFragments);
+        practice_viewpager.setAdapter(pagerAdapter);
     }
 
 

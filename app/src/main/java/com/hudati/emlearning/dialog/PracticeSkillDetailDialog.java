@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,8 +31,8 @@ public class PracticeSkillDetailDialog extends Dialog {
     Context context;
     PracticeSkill practiceSkill;
 
-    //    @BindView(R.id.dialog_practice_title)
-//    TextView dialog_practice_title;
+        @BindView(R.id.dialog_practice_title)
+    TextView dialog_practice_title;
     @BindView(R.id.dialog_practice_description)
     WebView dialog_practice_description;
     @BindView(R.id.dialog_practice_time)
@@ -65,10 +66,12 @@ public class PracticeSkillDetailDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.dialog_practice_skill_detail);
         ButterKnife.bind(this);
 
-        setTitle(practiceSkill.getPracticeTitle());
+        dialog_practice_title.setText(practiceSkill.getPracticeTitle());
         dialog_practice_time.setText(String.valueOf(practiceSkill.getPracticeTime()));
         dialog_practice_numOfQuestion.setText(String.valueOf(practiceSkill.getPracticeNumberQuestion()));
 

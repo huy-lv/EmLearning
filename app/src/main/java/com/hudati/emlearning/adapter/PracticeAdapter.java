@@ -46,7 +46,8 @@ public class PracticeAdapter extends BaseAdapter<Practice,PracticeAdapter.Practi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(activity, PracticeDetailActivity.class);
-                i.putExtra(Utils.INTENT_KEY_PRACTICE_NAME,practice.getPracticeTitle());
+                i.putExtra(Utils.INTENT_KEY_PRACTICE_TITLE,practice.getPracticeTitle());
+                i.putExtra(Utils.INTENT_KEY_PRACTICE_SUBTITLE,practice.getPracticeSubTitle());
                 i.putExtra(Utils.INTENT_KEY_PRACTICE_ACTION,practice.getActions().getActionDetails());
                 activity.startActivity(i);
             }

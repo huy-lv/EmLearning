@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.hudati.emlearning.R;
 import com.hudati.emlearning.adapter.PracticeSkillAdapter;
@@ -33,13 +34,15 @@ public class PracticeDetailActivity extends BaseToolbarActivity{
     ProgressBar practice_detail_pb;
     ArrayList<PracticeSkill> practiceSkills;
     PracticeSkillAdapter practiceSkillAdapter;
-
+    @BindView(R.id.practice_detail_subtitle)
+    TextView practice_detail_subtitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setActionbarTitle(getIntent().getStringExtra(Utils.INTENT_KEY_PRACTICE_NAME));
+        setActionbarTitle(getIntent().getStringExtra(Utils.INTENT_KEY_PRACTICE_TITLE));
+        practice_detail_subtitle.setText(getIntent().getStringExtra(Utils.INTENT_KEY_PRACTICE_SUBTITLE));
 
         practiceSkills = new ArrayList<>();
         practiceSkillAdapter = new PracticeSkillAdapter(this,practiceSkills);

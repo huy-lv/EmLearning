@@ -23,7 +23,7 @@ public class ReadingQuestion {
     String questionSubTitle;
 
     @SerializedName("questionType")
-    String questionType;
+    QuestionType questionType;
     @SerializedName("questionImage")
     String questionImage;
     @SerializedName("questionContent")
@@ -61,7 +61,7 @@ public class ReadingQuestion {
         return questionSubTitle;
     }
 
-    public String getQuestionType() {
+    public QuestionType getQuestionType() {
         return questionType;
     }
 
