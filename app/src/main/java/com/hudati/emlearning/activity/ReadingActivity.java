@@ -88,7 +88,12 @@ public class ReadingActivity extends BaseToolbarActivity {
     void onClickNext() {
         if (currentPage == readingFragments.size() - 1) {
             //check point
-            Utils.showInfoDialog(this, "Done");
+            Utils.showConfirmDialog(this, "Done!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
         } else {
             currentPage++;
             practice_viewpager.setCurrentItem(currentPage, true);

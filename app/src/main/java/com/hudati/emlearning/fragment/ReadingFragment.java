@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.hudati.emlearning.R;
@@ -100,8 +99,9 @@ public class ReadingFragment extends BaseFragment {
             sentences.add(s);
         }
 
-        ///add view
+        ///add view                                                             //TRUE,FALSE,NOT_GIVEN]
         for (Sentence sentence : sentences) {
+            Log.e("cxz", "sentence question type :" + question.getQuestionType());
             FlowLayout flowLayout = new FlowLayout(activity);
             for (String word : sentence.words) {
                 if (word.startsWith("[") && word.endsWith("]") ) {
@@ -123,8 +123,8 @@ public class ReadingFragment extends BaseFragment {
                             Spinner sp = new Spinner(activity);
                             String temp = word.split(":")[1];
                             temp = temp.substring(0,temp.length()-1);
-//                            String[] charr = temp.split(",");
-                            String[] charr = new String[]{"A","B","V"};
+                            String[] charr = temp.split(",");
+//                            String[] charr = new String[]{"A","B","V"};
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                                     activity, android.R.layout.simple_spinner_dropdown_item,charr);
                             sp.setAdapter(adapter);

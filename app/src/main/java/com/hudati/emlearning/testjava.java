@@ -1,5 +1,7 @@
 package com.hudati.emlearning;
 
+import android.text.TextUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,17 +11,24 @@ import java.util.regex.Pattern;
 
 public class testjava {
     public static void main(String[] args) {
-        System.out.println("===> Filter edit_text");
-        editext_filter();
+//        System.out.println("===> Filter edit_text");
+//        editext_filter();
+//
+//        System.out.println("===> Filter multi_choice");
+//        multi_choice_filter();
+//
+//        System.out.println("===> Filter dropdown");
+//        dropdown_filter();
+//
+//        System.out.println("===> Filter single_choice");
+//        single_choice_filter();
 
-        System.out.println("===> Filter multi_choice");
-        multi_choice_filter();
-
-        System.out.println("===> Filter dropdown");
-        dropdown_filter();
-
-        System.out.println("===> Filter single_choice");
-        single_choice_filter();
+        String a = "123";
+        if (TextUtils.isDigitsOnly(a)) {
+            System.out.print("ccc");
+        } else {
+            System.out.print("false");
+        }
     }
 
 
