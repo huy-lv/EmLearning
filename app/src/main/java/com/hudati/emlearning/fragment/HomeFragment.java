@@ -41,10 +41,9 @@ import static com.hudati.emlearning.util.Utils.INTENT_KEY_CATEGORY_NAME;
  */
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
+    public BookAdapter bookAdapter;
     @BindView(R.id.book_list_rv)
     RecyclerView book_list_rv;
-    BookAdapter bookAdapter;
-
     @BindView(R.id.main_layout_category)
     LinearLayout main_layout_category;
     @BindView(R.id.main_image_slider)

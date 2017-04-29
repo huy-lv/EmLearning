@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Environment;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -14,7 +15,11 @@ import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.hudati.emlearning.adapter.BookAdapter;
 import com.hudati.emlearning.api.RootApiResponse;
+import com.hudati.emlearning.model.Book;
+
+import java.io.File;
 
 /**
  * Created by huylv on 21-Mar-17.
@@ -46,6 +51,7 @@ public class Utils {
     public static RootApiResponse.APIList apiList;
 
     public static String YOUTUBE_DEVELOPER_KEY = "AIzaSyAQjlRkYGkV2X7pmxOufK_7XR9afuW44hI";
+    public static File[] bookDownloaded;
 
     public static int calculateNumOfColumns(Context context,int colWidth) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -112,6 +118,36 @@ public class Utils {
         ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static void scanBookListInStorage() {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/emlearning");
+        boolean success = true;
+        if (!folder.exists()) {
+            success = folder.mkdirs();
+            Log.e("cxz", "folder existed");
+        }
+        if (success) {
+            Log.e("cxz", "folder created");
+            Utils.bookDownloaded = folder.listFiles();
+        }
+    }
+
+    public static void notifyBookList(BookAdapter bookAdapter) {
+        if (bookDownloaded.length > 0) {
+            for (File f : bookDownloaded) {
+                for (Book b : bookAdapter.objectList) {
+                    if (f.getName().equals(b.getBookName())) {
+                        b.setDownloaded(true);
+                        b.setFilePath(f.getPath());
+                    }
+                }
+                Log.e("cxz", "file name " + f.getName());
+            }
+            bookAdapter.notifyDataSetChanged();
+        } else {
+            Log.e("cxz", "no file in folder book list");
+        }
     }
 
     public enum PracticeType{

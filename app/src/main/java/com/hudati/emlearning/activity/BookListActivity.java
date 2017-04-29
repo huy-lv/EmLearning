@@ -1,7 +1,6 @@
 package com.hudati.emlearning.activity;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.ProgressBar;
 import com.hudati.emlearning.R;
 import com.hudati.emlearning.adapter.BookAdapter;
 import com.hudati.emlearning.api.APIClient;
-import com.hudati.emlearning.api.APIInterface;
 import com.hudati.emlearning.api.BookListResponse;
 import com.hudati.emlearning.base.BaseToolbarActivity;
 import com.hudati.emlearning.model.Book;
@@ -24,6 +22,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.hudati.emlearning.util.Utils.calculateNumOfColumns;
+import static com.hudati.emlearning.util.Utils.notifyBookList;
+import static com.hudati.emlearning.util.Utils.scanBookListInStorage;
 import static com.hudati.emlearning.util.Utils.showInfoDialog;
 
 /**
@@ -47,6 +47,8 @@ public class BookListActivity extends BaseToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setActionbarTitle("Book list");
         bookList = new ArrayList<>();
         bookAdapter = new BookAdapter(this, bookList);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, calculateNumOfColumns(this, (int) getResources().getDimension(R.dimen.item_book_width)));
@@ -61,8 +63,11 @@ public class BookListActivity extends BaseToolbarActivity {
             @Override
             public void onResponse(Call<BookListResponse> call, Response<BookListResponse> response) {
                 bookList.addAll(response.body().getData());
-                bookAdapter.notifyDataSetChanged();
+//                bookAdapter.notifyDataSetChanged();
                 book_list_pb.setVisibility(View.GONE);
+
+                scanBookListInStorage();
+                notifyBookList(bookAdapter);
             }
 
             @Override
@@ -70,5 +75,12 @@ public class BookListActivity extends BaseToolbarActivity {
                 showInfoDialog(BookListActivity.this,"get book failure");
             }
         });
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bookAdapter.notifyDataSetChanged();
     }
 }

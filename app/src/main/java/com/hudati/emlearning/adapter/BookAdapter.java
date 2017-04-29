@@ -51,8 +51,8 @@ public class BookAdapter extends BaseAdapter<Book, BookAdapter.BookVH> {
             public void onClick(View v) {
                 Intent i = new Intent(activity, ReadBookActivity.class);
                 i.putExtra(Utils.INTENT_KEY_BOOK_NAME, book.getBookName());
-                i.putExtra(Utils.INTENT_KEY_BOOK_URL, book.getBookUrl());
                 i.putExtra(Utils.INTENT_KEY_BOOK_MP3, book.getBookAudio());
+                i.putExtra(Utils.INTENT_KEY_BOOK_URL, book.isDownloaded() ? book.getFilePath() : book.getBookUrl());
                 activity.startActivity(i);
             }
         });

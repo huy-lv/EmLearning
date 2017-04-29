@@ -24,6 +24,7 @@ public class Book {
     @SerializedName("organIdRef")
     String organIdRef;
 
+    String filePath;
     boolean isDownloaded;
 
     public Book(boolean isDeleted, String bookId, String bookName, String bookDescription, String bookUrl, String bookAudio, String bookImageUrl, String organIdRef) {
@@ -35,6 +36,14 @@ public class Book {
         this.bookAudio = bookAudio;
         this.bookImageUrl = bookImageUrl;
         this.organIdRef = organIdRef;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     public boolean isDownloaded() {

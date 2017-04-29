@@ -39,6 +39,8 @@ import retrofit2.Response;
 
 import static com.hudati.emlearning.util.Utils.LOGGED_IN;
 import static com.hudati.emlearning.util.Utils.isNetworkConnected;
+import static com.hudati.emlearning.util.Utils.notifyBookList;
+import static com.hudati.emlearning.util.Utils.scanBookListInStorage;
 import static com.hudati.emlearning.util.Utils.showInfoDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     MiddleFragment middleFragment;
     UserFragment userFragment;
     APIInterface apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,19 @@ public class MainActivity extends AppCompatActivity {
             main_activity_pb.setVisibility(View.INVISIBLE);
             Utils.showInfoDialog(this, getResources().getString(R.string.no_internet));
         }
+
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scanBookListInStorage();
+        if (homeFragment != null)
+            if (homeFragment.bookAdapter != null)
+                notifyBookList(homeFragment.bookAdapter);
+    }
+
 
     private void checkLogin() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -159,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
                     main_activity_pb.setVisibility(View.INVISIBLE);
                     viewpager.setVisibility(View.VISIBLE);
+                    notifyBookList(homeFragment.bookAdapter);
                 } else {
                     showInfoDialog(MainActivity.this, response.message());
 

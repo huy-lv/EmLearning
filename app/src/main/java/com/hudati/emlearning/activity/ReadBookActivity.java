@@ -2,6 +2,7 @@ package com.hudati.emlearning.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.hudati.emlearning.R;
 import com.hudati.emlearning.api.APIClient;
 import com.hudati.emlearning.api.AudioListRespone;
@@ -68,6 +71,10 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     RecyclerView read_book_list_audio;
     @BindView(R.id.read_book_audio_list_pb)
     ProgressBar read_book_audio_list_pb;
+    @BindView(R.id.read_pdfview)
+    PDFView read_pdfview;
+
+
     private String fileName;
     private MediaPlayer mediaPlayer;
     private int mediaFileLengthInMilliseconds;
@@ -77,21 +84,40 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setActionbarTitle(getIntent().getStringExtra(INTENT_KEY_BOOK_NAME));
+//        fileName = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1, pdfUrl.length());
+        fileName = getIntent().getStringExtra(INTENT_KEY_BOOK_NAME);
+        setActionbarTitle(fileName);
         pdfUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_URL);
         audioUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_MP3);
-        fileName = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1, pdfUrl.length());
         c = this;
 
-        read_wv.getSettings().setJavaScriptEnabled(true);
-        read_wv.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfUrl);
-        read_wv.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                read_pb.setVisibility(View.INVISIBLE);
+        if (pdfUrl.startsWith("/storage")) {
+            read_pdfview.setVisibility(View.VISIBLE);
+            read_wv.setVisibility(View.GONE);
+            File f = new File(Environment.getExternalStorageDirectory() + "/emlearning");
+            pdfUrl = f.listFiles()[0].getPath();
+            read_pdfview.fromFile(new File(pdfUrl)).onLoad(new OnLoadCompleteListener() {
+                @Override
+                public void loadComplete(int nbPages) {
+                    read_pb.setVisibility(View.GONE);
+                }
+            }).load();
 
-            }
-        });
+            toolbar_bt_download.setColorFilter(Color.BLUE);
+            toolbar_bt_download.setEnabled(false);
+        } else {
+            read_pdfview.setVisibility(View.GONE);
+            read_wv.setVisibility(View.VISIBLE);
+
+            read_wv.getSettings().setJavaScriptEnabled(true);
+            read_wv.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfUrl);
+            read_wv.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    read_pb.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
 
         //add button download
         toolbar_bt_download.setVisibility(View.VISIBLE);
