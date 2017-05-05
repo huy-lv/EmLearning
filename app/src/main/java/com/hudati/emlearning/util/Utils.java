@@ -20,6 +20,7 @@ import com.hudati.emlearning.api.RootApiResponse;
 import com.hudati.emlearning.model.Book;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by huylv on 21-Mar-17.
@@ -51,7 +52,7 @@ public class Utils {
     public static RootApiResponse.APIList apiList;
 
     public static String YOUTUBE_DEVELOPER_KEY = "AIzaSyAQjlRkYGkV2X7pmxOufK_7XR9afuW44hI";
-    public static File[] bookDownloaded;
+    public static ArrayList<File> bookDownloaded = new ArrayList<>();
 
     public static int calculateNumOfColumns(Context context,int colWidth) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -121,6 +122,7 @@ public class Utils {
     }
 
     public static void scanBookListInStorage() {
+
         File folder = new File(Environment.getExternalStorageDirectory() + "/emlearning");
         boolean success = true;
         if (!folder.exists()) {
@@ -129,12 +131,17 @@ public class Utils {
         }
         if (success) {
             Log.e("cxz", "folder created");
-            Utils.bookDownloaded = folder.listFiles();
+            bookDownloaded.clear();
+            for (File f : folder.listFiles()) {
+                bookDownloaded.add(f);
+            }
+        } else {
+            Log.e("cxz", "cannot create");
         }
     }
 
     public static void notifyBookList(BookAdapter bookAdapter) {
-        if (bookDownloaded.length > 0) {
+        if (bookDownloaded.size() > 0) {
             for (File f : bookDownloaded) {
                 for (Book b : bookAdapter.objectList) {
                     if (f.getName().equals(b.getBookName())) {

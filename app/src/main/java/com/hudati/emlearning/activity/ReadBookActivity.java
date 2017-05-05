@@ -1,7 +1,6 @@
 package com.hudati.emlearning.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,9 +22,11 @@ import com.hudati.emlearning.R;
 import com.hudati.emlearning.api.APIClient;
 import com.hudati.emlearning.api.AudioListRespone;
 import com.hudati.emlearning.base.BaseToolbarActivity;
+import com.hudati.emlearning.dialog.DownloadBookDialog;
 import com.hudati.emlearning.util.Utils;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.ProgressCallback;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
@@ -79,6 +81,7 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     private MediaPlayer mediaPlayer;
     private int mediaFileLengthInMilliseconds;
     private String audioUrl;
+    private DownloadBookDialog downloadBookDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,11 +127,18 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
         toolbar_bt_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.showConfirmDialog(c, "Are you sure to download this file?", new DialogInterface.OnClickListener() {
+                downloadBookDialog = new DownloadBookDialog(ReadBookActivity.this, new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String path = Environment.getExternalStorageDirectory() + "/emlearning/" + fileName;
-                        Ion.with(c).load(pdfUrl).write(new File(path)).setCallback(new FutureCallback<File>() {
+                    public void onClick(View view) {
+                        int downloadNum = 0;
+                        String path = Environment.getExternalStorageDirectory() + "/emlearning/" + fileName + ".pdf";
+                        Ion.with(c).load(pdfUrl).progress(new ProgressCallback() {
+                            @Override
+                            public void onProgress(long downloaded, long total) {
+                                Log.e("cxz", "downloaded " + downloaded + " " + total + " " + ((float) downloaded / total));
+                                downloadBookDialog.download_book_pv.setProgress((float) downloaded / total);
+                            }
+                        }).write(new File(path)).setCallback(new FutureCallback<File>() {
                             @Override
                             public void onCompleted(Exception e, File result) {
                                 Utils.showInfoDialog(c, "Download done!");
@@ -136,7 +146,7 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
                         });
                     }
                 });
-
+                downloadBookDialog.show();
             }
         });
 

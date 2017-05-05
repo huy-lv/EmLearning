@@ -31,7 +31,7 @@ public class PracticeSkillDetailDialog extends Dialog {
     Context context;
     PracticeSkill practiceSkill;
 
-        @BindView(R.id.dialog_practice_title)
+    @BindView(R.id.dialog_practice_title)
     TextView dialog_practice_title;
     @BindView(R.id.dialog_practice_description)
     WebView dialog_practice_description;

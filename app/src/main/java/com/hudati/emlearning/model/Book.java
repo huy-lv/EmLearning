@@ -38,6 +38,11 @@ public class Book {
         this.organIdRef = organIdRef;
     }
 
+    public Book(String bookName, String filePath) {
+        this.bookName = bookName;
+        this.filePath = filePath;
+    }
+
     public String getFilePath() {
         return filePath;
     }

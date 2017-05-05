@@ -1,5 +1,6 @@
 package com.hudati.emlearning;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -14,6 +15,8 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.hudati.emlearning.api.APIClient;
 import com.hudati.emlearning.api.APIInterface;
 import com.hudati.emlearning.api.HomeResponse;
@@ -86,13 +89,26 @@ public class MainActivity extends AppCompatActivity {
             main_activity_pb.setVisibility(View.INVISIBLE);
             Utils.showInfoDialog(this, getResources().getString(R.string.no_internet));
         }
+        new TedPermission(this).setPermissionListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                scanBookListInStorage();
+            }
 
-
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Utils.showInfoDialog(MainActivity.this, "You must approve to scan book list!");
+            }
+        })
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         scanBookListInStorage();
         if (homeFragment != null)
             if (homeFragment.bookAdapter != null)
