@@ -37,6 +37,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.hudati.emlearning.R.id.download_book_pv;
+import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_IMAGE;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_MP3;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_NAME;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_URL;
@@ -82,6 +84,9 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     private int mediaFileLengthInMilliseconds;
     private String audioUrl;
     private DownloadBookDialog downloadBookDialog;
+    private String imageUrl;
+    private String pdfPath;
+    private String imagePath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,7 +97,10 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
         setActionbarTitle(fileName);
         pdfUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_URL);
         audioUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_MP3);
+        imageUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_IMAGE);
         c = this;
+        pdfPath = Environment.getExternalStorageDirectory() + "/emlearning/" + fileName + ".pdf";
+        imagePath = Environment.getExternalStorageDirectory() + "/emlearning/" + fileName + "." + imageUrl.substring(imageUrl.length() - 3, imageUrl.length());
 
         if (pdfUrl.startsWith("/storage")) {
             read_pdfview.setVisibility(View.VISIBLE);
@@ -130,18 +138,26 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
                 downloadBookDialog = new DownloadBookDialog(ReadBookActivity.this, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int downloadNum = 0;
-                        String path = Environment.getExternalStorageDirectory() + "/emlearning/" + fileName + ".pdf";
-                        Ion.with(c).load(pdfUrl).progress(new ProgressCallback() {
-                            @Override
-                            public void onProgress(long downloaded, long total) {
-                                Log.e("cxz", "downloaded " + downloaded + " " + total + " " + ((float) downloaded / total));
-                                downloadBookDialog.download_book_pv.setProgress((float) downloaded / total);
-                            }
-                        }).write(new File(path)).setCallback(new FutureCallback<File>() {
+                        downloadBookDialog.download_book_pv.setVisibility(View.VISIBLE);
+                        Ion.with(c).load(pdfUrl)
+//                                .progress(new ProgressCallback() {
+//                                    @Override
+//                                    public void onProgress(long downloaded, long total) {
+//                                        Log.e("cxz", "downloaded " + downloaded + " " + total + " " + ((float) downloaded / total));
+//                                        downloadBookDialog.download_book_pv.setProgress((float) downloaded / total);
+//                                    }
+//                                })
+                                .write(new File(pdfPath)).setCallback(new FutureCallback<File>() {
                             @Override
                             public void onCompleted(Exception e, File result) {
-                                Utils.showInfoDialog(c, "Download done!");
+                                Ion.with(c).load(imageUrl).write(new File(imagePath)).setCallback(new FutureCallback<File>() {
+                                    @Override
+                                    public void onCompleted(Exception e, File result) {
+                                        downloadBookDialog.download_book_pv.setVisibility(View.GONE);
+                                        Utils.showInfoDialog(c, "Download done!");
+                                        downloadBookDialog.dismiss();
+                                    }
+                                });
                             }
                         });
                     }
@@ -161,27 +177,28 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
         media_sb.setOnSeekBarChangeListener(this);
 
         //prepare datasource
-        if (audioUrl.contains("drive.google.com")) {
-            APIClient.getInterface().loadAudioList(audioUrl).enqueue(new Callback<AudioListRespone>() {
-                @Override
-                public void onResponse(Call<AudioListRespone> call, Response<AudioListRespone> response) {
-                    read_book_audio_list_pb.setVisibility(View.INVISIBLE);
+        if (audioUrl != null) {
+            if (audioUrl.contains("drive.google.com")) {
+                APIClient.getInterface().loadAudioList(audioUrl).enqueue(new Callback<AudioListRespone>() {
+                    @Override
+                    public void onResponse(Call<AudioListRespone> call, Response<AudioListRespone> response) {
+                        read_book_audio_list_pb.setVisibility(View.INVISIBLE);
 
-                }
+                    }
 
-                @Override
-                public void onFailure(Call<AudioListRespone> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<AudioListRespone> call, Throwable t) {
 
-                }
-            });
+                    }
+                });
 //            audioUrl = "https://drive.google.com/uc?id=0BxD3fIhb7pyXaEt4SUtDbENkTkk&export=download";
-            prepareWithUrl(audioUrl);
-            media_collapse.setVisibility(View.VISIBLE);
-            media_list.setVisibility(View.VISIBLE);
-        } else {
-            prepareWithUrl(audioUrl);
+                prepareWithUrl(audioUrl);
+                media_collapse.setVisibility(View.VISIBLE);
+                media_list.setVisibility(View.VISIBLE);
+            } else {
+                prepareWithUrl(audioUrl);
+            }
         }
-
     }
 
     @OnClick(R.id.media_list)

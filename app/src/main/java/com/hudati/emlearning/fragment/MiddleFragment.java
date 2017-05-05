@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.hudati.emlearning.R;
 import com.hudati.emlearning.adapter.BookAdapter;
@@ -31,7 +33,8 @@ public class MiddleFragment extends BaseFragment {
     RecyclerView book_list_rv;
     BookAdapter bookAdapter;
     private ArrayList<Book> bookList;
-
+    @BindView(R.id.middle_no_book)
+    TextView middle_no_book;
 
     @Override
     protected int getLayoutId() {
@@ -43,9 +46,11 @@ public class MiddleFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         bookList = new ArrayList<>();
-        for (File f : Utils.bookDownloaded) {
-            bookList.add(new Book(f.getName(), f.getPath()));
+        for (Book b : Utils.bookDownloaded) {
+            bookList.add(b);
         }
+
+        if (bookList.size() == 0) middle_no_book.setVisibility(View.VISIBLE);
 
         bookAdapter = new BookAdapter(activity, bookList);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, calculateNumOfColumns(activity, (int) getResources().getDimension(R.dimen.item_book_width)));

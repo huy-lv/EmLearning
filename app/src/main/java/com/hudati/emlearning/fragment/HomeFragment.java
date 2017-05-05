@@ -35,6 +35,7 @@ import butterknife.BindView;
 
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_ACTION_LECTURE;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_CATEGORY_NAME;
+import static com.hudati.emlearning.util.Utils.notifyBookList;
 
 /**
  * Created by huylv on 22-Mar-17.
@@ -93,6 +94,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyBookList(bookAdapter);
+    }
 
     void drawCategories() {
         int size = c.categories.size();

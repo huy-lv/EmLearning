@@ -46,28 +46,29 @@ public class Utils {
     public static final String SP_ACCESS_TOKEN = "SP_ACCESS_TOKEN";
     public static final String INTENT_KEY_BOOK_MP3 = "INTENT_KEY_BOOK_MP3";
     public static final String INTENT_KEY_PRACTICE_SUBTITLE = "INTENT_KEY_PRACTICE_SUBTITLE";
+    public static final String INTENT_KEY_BOOK_IMAGE = "INTENT_KEY_BOOK_IMAGE";
     public static String ACCESS_TOKEN;
     public static boolean LOGGED_IN;
 
     public static RootApiResponse.APIList apiList;
 
     public static String YOUTUBE_DEVELOPER_KEY = "AIzaSyAQjlRkYGkV2X7pmxOufK_7XR9afuW44hI";
-    public static ArrayList<File> bookDownloaded = new ArrayList<>();
+    public static ArrayList<Book> bookDownloaded = new ArrayList<>();
 
-    public static int calculateNumOfColumns(Context context,int colWidth) {
+    public static int calculateNumOfColumns(Context context, int colWidth) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 //        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         int noOfColumns = Math.round(displayMetrics.widthPixels / colWidth);
-        Log.e("cxz","num of col = "+noOfColumns + " "+displayMetrics.widthPixels+ " "+colWidth);
+        Log.e("cxz", "num of col = " + noOfColumns + " " + displayMetrics.widthPixels + " " + colWidth);
         return noOfColumns;
     }
 
-    public static void showInfoDialog(Context c,String message){
-        (new AlertDialog.Builder(c)).setMessage(message).setPositiveButton("OK",null).create().show();
+    public static void showInfoDialog(Context c, String message) {
+        (new AlertDialog.Builder(c)).setMessage(message).setPositiveButton("OK", null).create().show();
     }
 
-    public static void showConfirmDialog(Context c, String message, DialogInterface.OnClickListener onClickYes){
-        (new AlertDialog.Builder(c)).setMessage(message).setPositiveButton("YES",onClickYes).setNegativeButton("NO",null).create().show();
+    public static void showConfirmDialog(Context c, String message, DialogInterface.OnClickListener onClickYes) {
+        (new AlertDialog.Builder(c)).setMessage(message).setPositiveButton("YES", onClickYes).setNegativeButton("NO", null).create().show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -122,7 +123,6 @@ public class Utils {
     }
 
     public static void scanBookListInStorage() {
-
         File folder = new File(Environment.getExternalStorageDirectory() + "/emlearning");
         boolean success = true;
         if (!folder.exists()) {
@@ -133,7 +133,16 @@ public class Utils {
             Log.e("cxz", "folder created");
             bookDownloaded.clear();
             for (File f : folder.listFiles()) {
-                bookDownloaded.add(f);
+                String path = f.getPath();
+                if (path.endsWith("pdf")) {
+                    String fpath = path.substring(path.length()-3,path.length());
+                    File ff = new File(fpath+".jpg");
+                    if(ff.isFile()) {
+                        bookDownloaded.add(new Book(f.getName(), f.getPath(), ff.getPath()));
+                    }else{
+                        bookDownloaded.add(new Book(f.getName(), f.getPath()));
+                    }
+                }
             }
         } else {
             Log.e("cxz", "cannot create");
@@ -142,14 +151,14 @@ public class Utils {
 
     public static void notifyBookList(BookAdapter bookAdapter) {
         if (bookDownloaded.size() > 0) {
-            for (File f : bookDownloaded) {
-                for (Book b : bookAdapter.objectList) {
-                    if (f.getName().equals(b.getBookName())) {
-                        b.setDownloaded(true);
-                        b.setFilePath(f.getPath());
+            for (Book b1 : bookDownloaded) {
+                for (Book b2 : bookAdapter.objectList) {
+                    if (b1.getBookName().equals(b2.getBookName())) {
+                        b2.setDownloaded(true);
+                        b2.setFilePath(b1.getFilePath());
                     }
                 }
-                Log.e("cxz", "file name " + f.getName());
+                Log.e("cxz", "file name " + b1.getBookName());
             }
             bookAdapter.notifyDataSetChanged();
         } else {
@@ -157,7 +166,7 @@ public class Utils {
         }
     }
 
-    public enum PracticeType{
-        Listening,Speaking,Reading,Writing
+    public enum PracticeType {
+        Listening, Speaking, Reading, Writing
     }
 }

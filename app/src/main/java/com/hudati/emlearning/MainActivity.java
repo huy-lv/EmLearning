@@ -109,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        scanBookListInStorage();
-        if (homeFragment != null)
-            if (homeFragment.bookAdapter != null)
-                notifyBookList(homeFragment.bookAdapter);
+//        scanBookListInStorage();
+//        if (homeFragment != null)
+//            if (homeFragment.bookAdapter != null)
+//                notifyBookList(homeFragment.bookAdapter);
     }
 
 

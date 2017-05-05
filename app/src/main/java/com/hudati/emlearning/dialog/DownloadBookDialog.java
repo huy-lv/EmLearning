@@ -49,6 +49,11 @@ public class DownloadBookDialog extends Dialog {
         ButterKnife.bind(this);
 
         download_book_ok.setOnClickListener(onClick);
-        download_book_pv.setProgress(30);
+        download_book_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 }

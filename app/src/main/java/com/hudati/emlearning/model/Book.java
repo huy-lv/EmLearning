@@ -41,6 +41,14 @@ public class Book {
     public Book(String bookName, String filePath) {
         this.bookName = bookName;
         this.filePath = filePath;
+        this.isDownloaded = true;
+    }
+
+    public Book(String bookName, String filePath,String imagePath) {
+        this.bookName = bookName;
+        this.filePath = filePath;
+        this.bookImageUrl = imagePath;
+        this.isDownloaded=true;
     }
 
     public String getFilePath() {
