@@ -135,8 +135,8 @@ public class Utils {
             for (File f : folder.listFiles()) {
                 String path = f.getPath();
                 if (path.endsWith("pdf")) {
-                    String fpath = path.substring(path.length()-3,path.length());
-                    File ff = new File(fpath+".jpg");
+                    String fpath = path.substring(0, path.length() - 3);
+                    File ff = new File(fpath + "jpg");
                     if(ff.isFile()) {
                         bookDownloaded.add(new Book(f.getName(), f.getPath(), ff.getPath()));
                     }else{
@@ -153,9 +153,11 @@ public class Utils {
         if (bookDownloaded.size() > 0) {
             for (Book b1 : bookDownloaded) {
                 for (Book b2 : bookAdapter.objectList) {
-                    if (b1.getBookName().equals(b2.getBookName())) {
+                    if (b1.getBookName().substring(0, b1.getBookName().length() - 4).equals(b2.getBookName())) {
                         b2.setDownloaded(true);
                         b2.setFilePath(b1.getFilePath());
+                        b2.setBookImageUrl(b1.getBookImageUrl());
+                        b2.setDownloaded(true);
                     }
                 }
                 Log.e("cxz", "file name " + b1.getBookName());

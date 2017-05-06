@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -19,25 +18,18 @@ import android.widget.SeekBar;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.hudati.emlearning.R;
-import com.hudati.emlearning.api.APIClient;
-import com.hudati.emlearning.api.AudioListRespone;
 import com.hudati.emlearning.base.BaseToolbarActivity;
 import com.hudati.emlearning.dialog.DownloadBookDialog;
 import com.hudati.emlearning.util.Utils;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.ProgressCallback;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-import static com.hudati.emlearning.R.id.download_book_pv;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_IMAGE;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_MP3;
 import static com.hudati.emlearning.util.Utils.INTENT_KEY_BOOK_NAME;
@@ -92,7 +84,6 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        fileName = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1, pdfUrl.length());
         fileName = getIntent().getStringExtra(INTENT_KEY_BOOK_NAME);
         setActionbarTitle(fileName);
         pdfUrl = getIntent().getStringExtra(INTENT_KEY_BOOK_URL);
@@ -101,7 +92,17 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
         c = this;
         pdfPath = Environment.getExternalStorageDirectory() + "/emlearning/" + fileName + ".pdf";
         imagePath = Environment.getExternalStorageDirectory() + "/emlearning/" + fileName + "." + imageUrl.substring(imageUrl.length() - 3, imageUrl.length());
+        toolbar_bt_download.setVisibility(View.VISIBLE);
 
+        new Thread() {
+            @Override
+            public void run() {
+                init();
+            }
+        }.start();
+    }
+
+    void init() {
         if (pdfUrl.startsWith("/storage")) {
             read_pdfview.setVisibility(View.VISIBLE);
             read_wv.setVisibility(View.GONE);
@@ -119,19 +120,21 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
         } else {
             read_pdfview.setVisibility(View.GONE);
             read_wv.setVisibility(View.VISIBLE);
-
-            read_wv.getSettings().setJavaScriptEnabled(true);
-            read_wv.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfUrl);
-            read_wv.setWebViewClient(new WebViewClient() {
+            read_wv.post(new Runnable() {
                 @Override
-                public void onPageFinished(WebView view, String url) {
-                    read_pb.setVisibility(View.INVISIBLE);
+                public void run() {
+                    read_wv.getSettings().setJavaScriptEnabled(true);
+                    read_wv.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfUrl);
+                    read_wv.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            read_pb.setVisibility(View.INVISIBLE);
+                        }
+                    });
                 }
             });
         }
-
         //add button download
-        toolbar_bt_download.setVisibility(View.VISIBLE);
         toolbar_bt_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,13 +143,6 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
                     public void onClick(View view) {
                         downloadBookDialog.download_book_pv.setVisibility(View.VISIBLE);
                         Ion.with(c).load(pdfUrl)
-//                                .progress(new ProgressCallback() {
-//                                    @Override
-//                                    public void onProgress(long downloaded, long total) {
-//                                        Log.e("cxz", "downloaded " + downloaded + " " + total + " " + ((float) downloaded / total));
-//                                        downloadBookDialog.download_book_pv.setProgress((float) downloaded / total);
-//                                    }
-//                                })
                                 .write(new File(pdfPath)).setCallback(new FutureCallback<File>() {
                             @Override
                             public void onCompleted(Exception e, File result) {
@@ -165,40 +161,38 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
                 downloadBookDialog.show();
             }
         });
-
-        //audio list
-        read_book_sliding_layout.setTouchEnabled(false);
-        //adapter////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        //play media
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnBufferingUpdateListener(this);
-        mediaPlayer.setOnCompletionListener(this);
-        media_sb.setOnSeekBarChangeListener(this);
-
-        //prepare datasource
-        if (audioUrl != null) {
-            if (audioUrl.contains("drive.google.com")) {
-                APIClient.getInterface().loadAudioList(audioUrl).enqueue(new Callback<AudioListRespone>() {
-                    @Override
-                    public void onResponse(Call<AudioListRespone> call, Response<AudioListRespone> response) {
-                        read_book_audio_list_pb.setVisibility(View.INVISIBLE);
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<AudioListRespone> call, Throwable t) {
-
-                    }
-                });
-//            audioUrl = "https://drive.google.com/uc?id=0BxD3fIhb7pyXaEt4SUtDbENkTkk&export=download";
-                prepareWithUrl(audioUrl);
-                media_collapse.setVisibility(View.VISIBLE);
-                media_list.setVisibility(View.VISIBLE);
-            } else {
-                prepareWithUrl(audioUrl);
-            }
-        }
+//        //audio list
+//        read_book_sliding_layout.setTouchEnabled(false);
+//
+//        //play media
+//        mediaPlayer = new MediaPlayer();
+//        mediaPlayer.setOnBufferingUpdateListener(this);
+//        mediaPlayer.setOnCompletionListener(this);
+//        media_sb.setOnSeekBarChangeListener(this);
+//
+//        //prepare datasource
+//        if (audioUrl != null) {
+//            if (audioUrl.contains("drive.google.com")) {
+//                APIClient.getInterface().loadAudioList(audioUrl).enqueue(new Callback<AudioListRespone>() {
+//                    @Override
+//                    public void onResponse(Call<AudioListRespone> call, Response<AudioListRespone> response) {
+//                        read_book_audio_list_pb.setVisibility(View.INVISIBLE);
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<AudioListRespone> call, Throwable t) {
+//
+//                    }
+//                });
+////            audioUrl = "https://drive.google.com/uc?id=0BxD3fIhb7pyXaEt4SUtDbENkTkk&export=download";
+//                prepareWithUrl(audioUrl);
+//                media_collapse.setVisibility(View.VISIBLE);
+//                media_list.setVisibility(View.VISIBLE);
+//            } else {
+//                prepareWithUrl(audioUrl);
+//            }
+//        }
     }
 
     @OnClick(R.id.media_list)
@@ -298,6 +292,7 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mediaPlayer != null)
         mediaPlayer.pause();
     }
 }

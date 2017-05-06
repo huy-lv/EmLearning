@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -70,6 +71,14 @@ public class PracticeSkillDetailDialog extends Dialog {
 
         setContentView(R.layout.dialog_practice_skill_detail);
         ButterKnife.bind(this);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        Window window = getWindow();
+        lp.copyFrom(window.getAttributes());
+//This makes the dialog take up the full width
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
 
         dialog_practice_title.setText(practiceSkill.getPracticeTitle());
         dialog_practice_time.setText(String.valueOf(practiceSkill.getPracticeTime()));

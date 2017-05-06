@@ -10,6 +10,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -108,11 +109,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-//        scanBookListInStorage();
-//        if (homeFragment != null)
-//            if (homeFragment.bookAdapter != null)
-//                notifyBookList(homeFragment.bookAdapter);
+        Log.e("cxz", "resume main");
+        scanBookListInStorage();
+        if (homeFragment != null)
+            if (homeFragment.bookAdapter != null)
+                notifyBookList(homeFragment.bookAdapter);
+        if (middleFragment != null)
+            if (middleFragment.bookAdapter != null)
+                middleFragment.refreshFragment();
     }
 
 
@@ -133,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     saveApi(response.body().getApiList());
                     loadHomePage(response.body().getApiList().get_api_home());
                 } else {
+                    main_activity_retry.setVisibility(View.VISIBLE);
                     main_activity_pb.setVisibility(View.INVISIBLE);
                     showInfoDialog(MainActivity.this, "Server error:" + response.message());
                 }
@@ -142,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<RootApiResponse> call, Throwable t) {
                 showInfoDialog(MainActivity.this, "Load api root error!\n" + t.getMessage());
                 main_activity_pb.setVisibility(View.INVISIBLE);
+                main_activity_retry.setVisibility(View.VISIBLE);
             }
         });
     }
