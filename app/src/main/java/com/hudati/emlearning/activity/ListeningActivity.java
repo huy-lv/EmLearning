@@ -140,7 +140,6 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
         float a = (float) mediaPlayer.getCurrentPosition();
         float b = ((float)mediaPlayer.getCurrentPosition()/ mediaPlayer.getDuration());
         int currentPos = (int) (b* 100);
-        Log.e("cxz","currentPos ="+currentPos+ " a "+a + " b "+ b);
         media_sb.setProgress(currentPos); // This math construction give a percentage of "was playing"/"song length"
         if (mediaPlayer.isPlaying()) {
             Runnable notification = new Runnable() {
@@ -175,12 +174,14 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
 //            final Section s = sections.get(i);
             if (i == 0) setActionbarTitle(sections.get(0).getSectionTitle());
             Call<QuestionResponse> call = APIClient.getInterface().loadQuestion(sections.get(i).getActions().getActionQuestions());
-            final int finalI = i;
             call.enqueue(new Callback<QuestionResponse>() {
                 @Override
                 public void onResponse(Call<QuestionResponse> call, Response<QuestionResponse> response) {
                     if (response.body().getQuestions().size() > 0) {
-                        sections.get(finalI).setQuestions(response.body().getQuestions());
+                        sections.get(iSection).setQuestions(response.body().getQuestions());
+                        Log.e("cxz", "load question " + iSection + " " + response.body().getQuestions().get(0).getQuestionTitle());
+                    } else {
+                        Log.e("cxz", "load question " + iSection + " questions size 0");
                     }
 
                     iSection++;
@@ -195,6 +196,7 @@ public class ListeningActivity extends BaseToolbarActivity implements MediaPlaye
                 }
             });
         }
+        iSection = 0;
     }
 
     private void onLoadDone() {

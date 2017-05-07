@@ -97,7 +97,7 @@ public class UserFragment extends BaseFragment {
 
         Bitmap blur = BitmapFactory.decodeResource(getResources(), R.mipmap.cover_profile);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            user_cover.setImageBitmap(Utils.blurRenderScript(activity, blur, 5));
+            user_cover.setImageBitmap(Utils.blurRenderScript(activity, blur, 25));
         }
     }
 
@@ -119,15 +119,21 @@ public class UserFragment extends BaseFragment {
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        Utils.setCurrentUser(response.body().getUser());
-                        LOGGED_IN = true;
-                        user_logged_in.setVisibility(View.VISIBLE);
-                        user_login.setVisibility(View.GONE);
-                        initViewUser();
-                        saveLoginToSP();
+                        if (response.body().getError() == 0) {
+                            Utils.setCurrentUser(response.body().getUser());
+                            LOGGED_IN = true;
+                            user_logged_in.setVisibility(View.VISIBLE);
+                            user_login.setVisibility(View.GONE);
+                            initViewUser();
+                            saveLoginToSP();
 
-                        user_input_user_name.clearComposingText();
-                        user_input_password.clearComposingText();
+                            user_input_user_name.clearComposingText();
+                            user_input_password.clearComposingText();
+                            user_input_user_name.clearFocus();
+                            user_input_password.clearFocus();
+                        } else {
+                            Utils.showInfoDialog(getActivity(), "Error:" + response.body().getError() + ": " + response.body().getMessage());
+                        }
                     } else {
                         showInfoDialog(getActivity(), response.errorBody().toString());
                     }
