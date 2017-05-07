@@ -104,8 +104,13 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
 
     void init() {
         if (pdfUrl.startsWith("/storage")) {
-            read_pdfview.setVisibility(View.VISIBLE);
-            read_wv.setVisibility(View.GONE);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    read_pdfview.setVisibility(View.VISIBLE);
+                    read_wv.setVisibility(View.GONE);
+                }
+            });
             File f = new File(Environment.getExternalStorageDirectory() + "/emlearning");
             pdfUrl = f.listFiles()[0].getPath();
             read_pdfview.fromFile(new File(pdfUrl)).onLoad(new OnLoadCompleteListener() {
@@ -118,11 +123,11 @@ public class ReadBookActivity extends BaseToolbarActivity implements MediaPlayer
             toolbar_bt_download.setColorFilter(Color.BLUE);
             toolbar_bt_download.setEnabled(false);
         } else {
-            read_pdfview.setVisibility(View.GONE);
-            read_wv.setVisibility(View.VISIBLE);
-            read_wv.post(new Runnable() {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    read_pdfview.setVisibility(View.GONE);
+                    read_wv.setVisibility(View.VISIBLE);
                     read_wv.getSettings().setJavaScriptEnabled(true);
                     read_wv.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfUrl);
                     read_wv.setWebViewClient(new WebViewClient() {

@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.hudati.emlearning.adapter.BookAdapter;
 import com.hudati.emlearning.api.RootApiResponse;
+import com.hudati.emlearning.api.User;
 import com.hudati.emlearning.model.Book;
 
 import java.io.File;
@@ -48,12 +49,13 @@ public class Utils {
     public static final String INTENT_KEY_PRACTICE_SUBTITLE = "INTENT_KEY_PRACTICE_SUBTITLE";
     public static final String INTENT_KEY_BOOK_IMAGE = "INTENT_KEY_BOOK_IMAGE";
     public static String ACCESS_TOKEN;
-    public static boolean LOGGED_IN;
+    public static boolean LOGGED_IN = false;
 
     public static RootApiResponse.APIList apiList;
 
     public static String YOUTUBE_DEVELOPER_KEY = "AIzaSyAQjlRkYGkV2X7pmxOufK_7XR9afuW44hI";
     public static ArrayList<Book> bookDownloaded = new ArrayList<>();
+    private static User currentUser;
 
     public static int calculateNumOfColumns(Context context, int colWidth) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -168,7 +170,19 @@ public class Utils {
         }
     }
 
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
     public enum PracticeType {
         Listening, Speaking, Reading, Writing
+    }
+
+    public enum UserRole {
+        Root, ROLE_STUDENT, ROLE_TEACHER
     }
 }

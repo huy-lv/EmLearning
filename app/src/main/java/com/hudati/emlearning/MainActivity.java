@@ -16,12 +16,14 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hudati.emlearning.api.APIClient;
 import com.hudati.emlearning.api.APIInterface;
 import com.hudati.emlearning.api.HomeResponse;
 import com.hudati.emlearning.api.RootApiResponse;
+import com.hudati.emlearning.api.User;
 import com.hudati.emlearning.fragment.HomeFragment;
 import com.hudati.emlearning.fragment.MiddleFragment;
 import com.hudati.emlearning.fragment.UserFragment;
@@ -122,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkLogin() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        Utils.LOGGED_IN = sp.getBoolean(Utils.SP_CHECK_USER, false);
-        if (LOGGED_IN) Utils.ACCESS_TOKEN = sp.getString(Utils.SP_ACCESS_TOKEN, null);
+        String user = sp.getString(Utils.SP_CHECK_USER, null);
+        Utils.LOGGED_IN = user != null;
+        if (LOGGED_IN) Utils.setCurrentUser((new Gson().fromJson(user, User.class)));
     }
 
     void loadRootApi() {
@@ -196,7 +199,8 @@ public class MainActivity extends AppCompatActivity {
 
                     main_activity_pb.setVisibility(View.INVISIBLE);
                     viewpager.setVisibility(View.VISIBLE);
-                    notifyBookList(homeFragment.bookAdapter);
+                    if (homeFragment.bookAdapter != null)
+                        notifyBookList(homeFragment.bookAdapter);
                 } else {
                     showInfoDialog(MainActivity.this, response.message());
 

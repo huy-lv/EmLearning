@@ -1,7 +1,10 @@
 package com.hudati.emlearning.api;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Url;
 
 /**
@@ -54,4 +57,17 @@ public interface APIInterface {
 
     @GET
     Call<AudioListRespone> loadAudioList(@Url String url);
+
+    @FormUrlEncoded
+    @POST
+    Call<LoginResponse> login(@Url String url,
+                              @Field("email") String username,
+                              @Field("password") String password,
+                              @Field("facebookId") String facebookId,
+                              @Field("googlePlusId") String googlePlusId);
+
+    @FormUrlEncoded
+    @POST
+    Call<BaseResponse> logout(@Url String url,
+                              @Field("accessToken") String accessToken);
 }

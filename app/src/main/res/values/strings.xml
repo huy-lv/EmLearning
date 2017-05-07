@@ -3,4 +3,7 @@
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
     <string name="retry">Tap to retry</string>
     <string name="no_internet">No internet connection!</string>
+    <string name="forgot_password"><u>Forgot password?</u></string>
+    <string name="wrong_username">Wrong username or password!</string>
+
 </resources>
